@@ -2,5 +2,7 @@
   "name": "GIFT-exchange",
   "app_id": "c1a3d798",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }
