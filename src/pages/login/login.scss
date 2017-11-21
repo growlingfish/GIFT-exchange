@@ -1,0 +1,24 @@
+page-login {
+    
+        ion-row {
+            text-align: center;
+        }
+    
+        .outer {
+            width: 80%;
+            padding-top: 30%;
+        }
+    
+        p {
+            color: color($colors, light);
+        }
+    
+        .register {
+            margin-top: 10%;
+        }
+    
+        ion-item, .item {
+            @include alpha-background-color(rgba(white, 0.8), white);
+        }
+    }
+    

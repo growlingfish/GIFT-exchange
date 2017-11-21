@@ -1,19 +1,25 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
-import { HomePage } from '../home/home';
+import { NavParams } from 'ionic-angular';
+
+import { TheirGiftsPage } from '../theirgifts/theirgifts';
+import { MyGiftsPage } from '../mygifts/mygifts';
+import { ActivityPage } from '../activity/activity';
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  makeRoot = TheirGiftsPage;
+  unwrapRoot = MyGiftsPage;
+  activityRoot = ActivityPage;
 
-  constructor() {
+  selectedTab: number;
 
+  constructor(public navParams: NavParams) {
+    this.selectedTab = navParams.get('tab') || 0;
   }
+
+  // UNFINISHED
 }
