@@ -18,4 +18,27 @@ export class GlobalVarProvider {
     return this.getApiBase() + "auth/" + encodeURI(username) + "/" + encodeURI(password);
   }
 
+  getSentGiftsURL (userId) {
+    return this.getApiBase() + "gifts/sent/" + userId;
+  }
+
+  getReceivedGiftsURL (userId) {
+    return this.getApiBase() + "gifts/received/" + userId;
+  }
+
+  getContactsURL (userId) {
+    return this.getApiBase() + "contacts/" + userId;
+  }
+
+  getObjectsURL (userId) {
+    return this.getApiBase() + "objects/" + userId;
+  }
+
+  getLocationsURL () {
+    return this.getApiBase() + "locations/";
+  }
+
+  getActivityURL (userId) {
+    return this.getApiBase() + "responses/" + userId;
+  }
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>288481360666-085jfpi7d635c9e6tvdae9cf4fcupcm9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.288481360666-085jfpi7d635c9e6tvdae9cf4fcupcm9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBP7HIPIeL8bve9FORXYjsbPVRJj0n0KlM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>288481360666</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>uk.ac.nottingham.gift.exchange</string>
+	<key>PROJECT_ID</key>
+	<string>gift-eu-1491403324909</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gift-eu-1491403324909.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:288481360666:ios:fa6e6ee2d6508f41</string>
+	<key>DATABASE_URL</key>
+	<string>https://gift-eu-1491403324909.firebaseio.com</string>
+</dict>
+</plist>
