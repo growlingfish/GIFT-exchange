@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +15,11 @@ interface LoginResponse {
   user: Object;
   token: string;
   success: boolean;
+}
+
+interface UpdateTheirGiftsResponse {
+  success: boolean;
+  gifts: Array<Object>;
 }
 
 @Injectable()
@@ -110,12 +115,13 @@ export class UserProvider {
         this.http.get<LoginResponse>(this.globalVar.getAuthURL(username, password))
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
-              this.setUser(data.user).then(data => {
-                this.setGIFTToken(data.token);
-                this.initialiseData();
-                this.initialiseFCM();
-                observer.next(true);
-                observer.complete();
+              this.setUser(data.user).then(result => {
+                this.setGIFTToken(data.token).then(result => {
+                  this.initialiseData();
+                  this.initialiseFCM();
+                  observer.next(true);
+                  observer.complete();
+                });
               });
             } else {
               observer.next(false);
@@ -289,7 +295,7 @@ export class UserProvider {
   }
 
   public initialiseData () {
-    /*this.updateTheirGifts().subscribe(complete => {
+    this.updateTheirGifts().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting sent gifts");
       } else {
@@ -300,7 +306,7 @@ export class UserProvider {
       console.log("Failed getting sent gifts");
     });
 
-    this.updateMyGifts().subscribe(complete => {
+    /*this.updateMyGifts().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting received gifts");
       } else {
@@ -356,11 +362,14 @@ export class UserProvider {
     });*/
   }
 
-  /*updateTheirGifts (): Observable<any> {
+  updateTheirGifts (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
-        this.http.get(this.globalVar.getSentGiftsURL(data.ID))
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          console.log(tokenData);
+          this.http.get<UpdateTheirGiftsResponse>(this.globalVar.getSentGiftsURL(data.ID), {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setTheirGifts(data.gifts);
@@ -375,11 +384,12 @@ export class UserProvider {
             observer.next(false);
             observer.complete();
           });
+        });
       });
     });
   }
 
-  updateMyGifts (): Observable<any> {
+  /*updateMyGifts (): Observable<any> {
     return Observable.create(observer => {
       var user = this.getUser();
       user.then(data => {
