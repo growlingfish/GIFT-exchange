@@ -1,18 +1,30 @@
-<!--
-  Generated template for the LogoutPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>logout</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+  
+    <ion-navbar>
+      <ion-title>Log Out</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  <ion-content padding>
+  
+    <ion-grid>
+      <ion-row justify-content-center align-items-center>
+        <div class="outer">
+          <p>Are you sure you want to log out?</p>
+          <p *ngIf="unfinished">When you log out, the Gift that you have started making but that you have not sent will be discarded.</p>
+        
+          <div class="buttons">
+            <div>
+              <button ion-button block (click)="logout()">Log out</button>
+            </div>
+            <div>
+              <button ion-button color="danger" (click)="cancel()" *ngIf="!unfinished">Cancel</button>
+              <button ion-button color="danger" (click)="review()" *ngIf="unfinished">Return to Incomplete Gift</button>
+            </div>
+          </div>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  

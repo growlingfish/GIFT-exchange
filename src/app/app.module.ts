@@ -10,6 +10,7 @@ import { IntroPage } from '../pages/intro/intro';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { MyGiftsPage } from '../pages/mygifts/mygifts';
+import { NewGiftPage } from '../pages/newgift/newgift';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
@@ -29,6 +30,7 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     LoginPage,
     LogoutPage,
     MyGiftsPage,
+    NewGiftPage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage
@@ -47,6 +49,7 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     LoginPage,
     LogoutPage,
     MyGiftsPage,
+    NewGiftPage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage

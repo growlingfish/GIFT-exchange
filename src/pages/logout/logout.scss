@@ -1,3 +1,25 @@
 page-logout {
-
-}
+    
+        ion-row {
+            text-align: center;
+        }
+    
+        .grid, .row {
+        // Force grid to fill height of content as this is not set by default
+            height: 100%;
+        }
+    
+        .outer {
+            width: 80%;
+        }
+    
+        p {
+            color: color($colors, light);
+        }
+    
+        .buttons {
+            margin-top: 10%;
+        }
+    
+    }
+    

@@ -107,6 +107,18 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.set('activity', val));
   }
 
+  public getUnfinishedGift (): Promise<any> {
+    return this.storage.ready().then(() => this.storage.get('unfinishedGift'));
+  }
+
+  public setUnfinishedGift (val: any): Promise<any> {
+    return this.storage.ready().then(() => this.storage.set('unfinishedGift', val));
+  }
+
+  public clearUnfinishedGift (): Promise<any> {
+    return this.storage.ready().then(() => this.storage.remove('unfinishedGift'));
+  }
+
   public login (username: string, password: string) {
     if (username === null || password === null) {
       return Observable.throw("Username or password missing");
@@ -134,6 +146,18 @@ export class UserProvider {
           });
       });
     }
+  }
+
+  public logout (): Promise<void> {
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
+        this.fcm.unsubscribeFromTopic('giftGlobal');
+        this.fcm.unsubscribeFromTopic('giftDeliveries');
+        this.fcm.unsubscribeFromTopic('giftStatus');
+      }
+    });
+
+    return this.storage.ready().then(() => this.storage.clear());
   }
 
   public initialiseFCM () {
@@ -366,7 +390,6 @@ export class UserProvider {
     return Observable.create(observer => {
       this.getUser().then(data => {
         this.getGIFTToken().then(tokenData => {
-          console.log(tokenData);
           this.http.get<UpdateTheirGiftsResponse>(this.globalVar.getSentGiftsURL(data.ID), {
             headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
           })
