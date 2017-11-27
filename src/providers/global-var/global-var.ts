@@ -18,6 +18,10 @@ export class GlobalVarProvider {
     return this.getApiBase() + "auth/" + encodeURI(username) + "/" + encodeURI(password);
   }
 
+  getRegisterURL (username, password, email, name) {
+    return this.getApiBase() + "new/sender/" + encodeURI(username) + "/" + encodeURI(password) + "/" + encodeURI(email) + "/" + encodeURI(name);
+  }
+
   getSentGiftsURL (userId) {
     return this.getApiBase() + "gifts/sent/" + userId;
   }

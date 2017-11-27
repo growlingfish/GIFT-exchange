@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Platform } from 'ionic-angular';
+import { App, Platform } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -11,10 +11,17 @@ import { FCM } from '@ionic-native/fcm';
 
 import { GlobalVarProvider } from '../global-var/global-var';
 
+import { KickoutPage } from '../../pages/kickout/kickout';
+
 interface LoginResponse {
   user: Object;
   token: string;
   success: boolean;
+}
+
+interface RegisterResponse {
+  success: boolean;
+  user: Object;
 }
 
 interface UpdateTheirGiftsResponse {
@@ -22,10 +29,15 @@ interface UpdateTheirGiftsResponse {
   gifts: Array<Object>;
 }
 
+interface UpdateActivityResponse {
+  success: boolean;
+  responses: Array<Object>;
+}
+
 @Injectable()
 export class UserProvider {
 
-  constructor(public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM) {}
+  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM) {}
 
   public getSeenIntro (): Promise<boolean> {
     return this.storage.ready().then(() => this.storage.get('seenIntro'));
@@ -158,6 +170,29 @@ export class UserProvider {
     });
 
     return this.storage.ready().then(() => this.storage.clear());
+  }
+
+  public register (username: string, password: string, email: string, name: string): Observable<any> {
+    if (email === null || password === null || name === null || username === null) {
+      return Observable.throw("Please insert credentials");
+    } else {
+      return Observable.create(observer => {
+        this.http.get<RegisterResponse>(this.globalVar.getRegisterURL(username, password, email, name))
+          .subscribe(data => {
+            if (typeof data.success !== 'undefined' && data.success) {
+              observer.next(true);
+              observer.complete();
+            } else {
+              observer.next(false);
+              observer.complete();
+            }
+          },
+          function (error) {
+            observer.next(false);
+            observer.complete();
+          });
+      });
+    }
   }
 
   public initialiseFCM () {
@@ -323,7 +358,10 @@ export class UserProvider {
       if (complete) {
         console.log("Succeeded getting sent gifts");
       } else {
-        console.log("Failed getting sent gifts");
+        console.log("Failed getting sent gifts ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
@@ -334,7 +372,10 @@ export class UserProvider {
       if (complete) {
         console.log("Succeeded getting received gifts");
       } else {
-        console.log("Failed getting received gifts");
+        console.log("Failed getting received gifts ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
@@ -345,7 +386,10 @@ export class UserProvider {
       if (complete) {
         console.log("Succeeded getting contacts");
       } else {
-        console.log("Failed getting contacts");
+        console.log("Failed getting contacts ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
@@ -356,7 +400,10 @@ export class UserProvider {
       if (complete) {
         console.log("Succeeded getting objects");
       } else {
-        console.log("Failed getting objects");
+        console.log("Failed getting objects ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
@@ -367,23 +414,29 @@ export class UserProvider {
       if (complete) {
         console.log("Succeeded getting locations");
       } else {
-        console.log("Failed getting locations");
+        console.log("Failed getting locations ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
       console.log("Failed getting locations");
-    });
+    });*/
 
     this.updateActivity().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting activity");
       } else {
-        console.log("Failed getting activity");
+        console.log("Failed getting activity ... kicking out");
+        this.logout().then(data => {
+          this.app.getRootNav().setRoot(KickoutPage);
+        });
       }
     },
     error => {
       console.log("Failed getting activity");
-    });*/
+    });
   }
 
   updateTheirGifts (): Observable<any> {
@@ -502,13 +555,16 @@ export class UserProvider {
           });
       });
     });
-  }
+  }*/
 
   updateActivity (): Observable<any> {
     return Observable.create(observer => {
       var user = this.getUser();
       user.then(data => {
-        this.http.get(this.globalVar.getActivityURL(data.ID))
+        this.getGIFTToken().then(tokenData => {
+          this.http.get<UpdateActivityResponse>(this.globalVar.getActivityURL(data.ID), {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setActivity(data.responses);
@@ -523,7 +579,8 @@ export class UserProvider {
             observer.next(false);
             observer.complete();
           });
+        });
       });
     });
-  }*/
+  }
 }

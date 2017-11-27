@@ -7,10 +7,15 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { ActivityPage } from '../pages/activity/activity';
 import { IntroPage } from '../pages/intro/intro';
+import { KickoutPage } from '../pages/kickout/kickout';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { MyGiftsPage } from '../pages/mygifts/mygifts';
 import { NewGiftPage } from '../pages/newgift/newgift';
+import { RegisterPage } from '../pages/register/register';
+import { ReviewGiftPage } from '../pages/reviewgift/reviewgift';
+import { ReviewObjectPage } from '../pages/reviewobject/reviewobject';
+import { ReviewMessagePage } from '../pages/reviewmessage/reviewmessage';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
@@ -27,10 +32,15 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     MyApp,
     ActivityPage,
     IntroPage,
+    KickoutPage,
     LoginPage,
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    RegisterPage,
+    ReviewGiftPage,
+    ReviewObjectPage,
+    ReviewMessagePage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage
@@ -46,10 +56,15 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     MyApp,
     ActivityPage,
     IntroPage,
+    KickoutPage,
     LoginPage,
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    RegisterPage,
+    ReviewGiftPage,
+    ReviewObjectPage,
+    ReviewMessagePage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage

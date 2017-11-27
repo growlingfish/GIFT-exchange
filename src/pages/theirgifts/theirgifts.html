@@ -1,18 +1,47 @@
-<!--
-  Generated template for the TheirgiftsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>theirgifts</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+  
+    <ion-navbar>
+      <ion-title>Make a Gift</ion-title>
+      
+      <ion-buttons end>
+        <button ion-button icon-only (click)="logout()">
+          <ion-icon name="log-out"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  <ion-content padding>
+  
+    <ion-searchbar (ionInput)="filterGifts($event)" *ngIf="!!gifts && gifts.length > 1"></ion-searchbar>
+  
+    <ion-list>
+  
+      <ion-item (click)="startNew()" *ngIf="!unfinished" text-wrap>
+        <ion-icon name="add-circle" item-start color="secondary"></ion-icon>
+        Make a new gift
+        <button ion-button clear item-end color="secondary">Start</button>
+      </ion-item>
+  
+      <ion-item-divider color="light" *ngIf="unfinished">Unfinished Gifts</ion-item-divider>
+  
+      <ion-item (click)="startNew()" *ngIf="unfinished" text-wrap>
+        <ion-icon name="add-circle" item-start color="danger"></ion-icon>
+        <h2>{{unfinishedTitle}}</h2>
+        <p>Tap here to complete this Gift</p>
+        <button ion-button clear item-end color="secondary">Continue</button>
+      </ion-item>
+  
+      <ion-item-divider color="light" *ngIf="!!gifts && gifts.length > 0">Already Made Gifts</ion-item-divider>
+  
+      <ion-item *ngFor="let gift of gifts" (click)="review(gift)" text-wrap>
+        <ion-icon name="arrow-dropright-circle" item-start></ion-icon>
+        <h2>A Gift for {{ gift.recipient.nickname }}</h2>
+        <p>Sent at {{ gift.post_date }}</p>
+        <button ion-button clear item-end color="secondary">Review</button>
+      </ion-item>
+    </ion-list>
+  
+  </ion-content>
+  
