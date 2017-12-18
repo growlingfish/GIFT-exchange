@@ -46,8 +46,7 @@ export class TheirGiftsPage {
       
       if (val && val.trim() != '') {
         this.gifts = this.gifts.filter((gift) => {
-          return (gift.post_title.toLowerCase().indexOf(val.toLowerCase()) > -1)
-            || (gift.recipient.nickname.toLowerCase().indexOf(val.toLowerCase()) > -1);
+          return gift.recipient.nickname.toLowerCase().indexOf(val.toLowerCase()) > -1;
         })
       }
     });

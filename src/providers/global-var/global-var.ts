@@ -45,4 +45,12 @@ export class GlobalVarProvider {
   getActivityURL (userId) {
     return this.getApiBase() + "responses/" + userId;
   }
+
+  getUnwrappedURL (giftId, receiverId) {
+    return this.getApiBase() + "unwrapped/gift/" + giftId + "/" + receiverId;
+  }
+
+  getReceivedURL (giftId, receiverId) {
+    return this.getApiBase() + "received/gift/" + giftId + "/" + receiverId;
+  }
 }

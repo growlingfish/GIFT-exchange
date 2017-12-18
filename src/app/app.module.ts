@@ -12,10 +12,15 @@ import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { MyGiftsPage } from '../pages/mygifts/mygifts';
 import { NewGiftPage } from '../pages/newgift/newgift';
+import { OpenMessagePage } from '../pages/openmessage/openmessage';
+import { OpenMyGiftPage } from '../pages/openmygift/openmygift';
+import { OpenObjectPage } from '../pages/openobject/openobject';
 import { RegisterPage } from '../pages/register/register';
+import { RespondPage } from '../pages/respond/respond';
 import { ReviewGiftPage } from '../pages/reviewgift/reviewgift';
 import { ReviewObjectPage } from '../pages/reviewobject/reviewobject';
 import { ReviewMessagePage } from '../pages/reviewmessage/reviewmessage';
+import { ReviewMyGiftPage } from '../pages/reviewmygift/reviewmygift';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
@@ -37,10 +42,15 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    OpenMessagePage,
+    OpenMyGiftPage,
+    OpenObjectPage,
     RegisterPage,
+    RespondPage,
     ReviewGiftPage,
     ReviewObjectPage,
     ReviewMessagePage,
+    ReviewMyGiftPage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage
@@ -61,10 +71,15 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    OpenMessagePage,
+    OpenMyGiftPage,
+    OpenObjectPage,
     RegisterPage,
+    RespondPage,
     ReviewGiftPage,
     ReviewObjectPage,
     ReviewMessagePage,
+    ReviewMyGiftPage,
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage

@@ -29,9 +29,22 @@ interface UpdateTheirGiftsResponse {
   gifts: Array<Object>;
 }
 
+interface UpdateMyGiftsResponse {
+  success: boolean;
+  gifts: Array<Object>;
+}
+
 interface UpdateActivityResponse {
   success: boolean;
   responses: Array<Object>;
+}
+
+interface UnwrappedGiftResponse {
+  success: boolean;
+}
+
+interface ReceivedGiftResponse {
+  success: boolean;
 }
 
 @Injectable()
@@ -129,6 +142,18 @@ export class UserProvider {
 
   public clearUnfinishedGift (): Promise<any> {
     return this.storage.ready().then(() => this.storage.remove('unfinishedGift'));
+  }
+
+  public getUnopenedGift (giftId: number): Promise<any> {
+    return this.storage.ready().then(() => this.storage.get('unopenedGift' + giftId));
+  }
+
+  public setUnopenedGift (giftId: number, val: any): Promise<any> {
+    return this.storage.ready().then(() => this.storage.set('unopenedGift' + giftId, val));
+  }
+
+  public clearUnopenedGift (giftId: number): Promise<any> {
+    return this.storage.ready().then(() => this.storage.remove('unopenedGift' + giftId));
   }
 
   public login (username: string, password: string) {
@@ -368,7 +393,7 @@ export class UserProvider {
       console.log("Failed getting sent gifts");
     });
 
-    /*this.updateMyGifts().subscribe(complete => {
+    this.updateMyGifts().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting received gifts");
       } else {
@@ -382,7 +407,7 @@ export class UserProvider {
       console.log("Failed getting received gifts");
     });
 
-    this.updateContacts().subscribe(complete => {
+    /*this.updateContacts().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting contacts");
       } else {
@@ -465,11 +490,13 @@ export class UserProvider {
     });
   }
 
-  /*updateMyGifts (): Observable<any> {
+  updateMyGifts (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
-        this.http.get(this.globalVar.getReceivedGiftsURL(data.ID))
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.http.get<UpdateMyGiftsResponse>(this.globalVar.getReceivedGiftsURL(data.ID), {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setMyGifts(data.gifts);
@@ -484,11 +511,12 @@ export class UserProvider {
             observer.next(false);
             observer.complete();
           });
+        });
       });
     });
   }
 
-  updateContacts (): Observable<any> {
+  /*updateContacts (): Observable<any> {
     return Observable.create(observer => {
       var user = this.getUser();
       user.then(data => {
@@ -559,8 +587,7 @@ export class UserProvider {
 
   updateActivity (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
+      this.getUser().then(data => {
         this.getGIFTToken().then(tokenData => {
           this.http.get<UpdateActivityResponse>(this.globalVar.getActivityURL(data.ID), {
             headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
@@ -578,6 +605,60 @@ export class UserProvider {
           function (error) {
             observer.next(false);
             observer.complete();
+          });
+        });
+      });
+    });
+  }
+
+  unwrappedGift (giftId) {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.getUnopenedGift(giftId).then(gift => {
+            this.http.get<UnwrappedGiftResponse>(this.globalVar.getUnwrappedURL(giftId, data.ID), {
+              headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+            })
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                observer.next(true);
+                observer.complete();
+              } else {
+                observer.next(false);
+                observer.complete();
+              }
+            },
+            function (error) {
+              observer.next(false);
+              observer.complete();
+            });
+          });
+        });
+      });
+    });
+  }
+
+  receivedGift (giftId) {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.getUnopenedGift(giftId).then(gift => {
+            this.http.get<ReceivedGiftResponse>(this.globalVar.getReceivedURL(giftId, data.ID), {
+              headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+            })
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                observer.next(true);
+                observer.complete();
+              } else {
+                observer.next(false);
+                observer.complete();
+              } 
+            },
+            function (error) {
+              observer.next(false);
+              observer.complete();
+            });
           });
         });
       });

@@ -1,0 +1,93 @@
+page-openmygift {
+    
+    p, h2 {
+        color: white;
+    }
+
+    .sender {
+        
+        padding: 40px 0 20px 0;
+
+        .sender-icon {
+            text-align: right;
+            font-size: 50px;
+            padding-right: 20px;
+            color: rgb(255, 220, 75);
+        }
+
+    }
+
+    .parts {
+        text-align: center;
+        
+        p {
+            color: black;
+        }
+
+        ion-row {
+            padding: 2px 0;
+        }
+
+        ion-col {
+            padding: 20px 0 10px 0;
+        }
+
+        h2 {
+            text-transform: uppercase;
+        }
+
+        .component-1 {
+            background: #333333;
+        }
+
+        .component-1.complete {
+            background: rgb(255, 220, 75);
+        }
+
+        .component-1.incomplete {
+            background: rgb(75, 195, 220);
+        }
+
+        .component-2 {
+            background: #666666;
+        }
+
+        .component-2.complete {
+            background: rgb(255, 220, 75);
+        }
+
+        .component-2.incomplete {
+            background: rgb(75, 195, 220);
+        }
+
+        .component-3 {
+            background: #999999;
+        }
+
+        .component-3.complete {
+            background: rgb(255, 220, 75);
+        }
+
+        .component-3.incomplete {
+            background: rgb(75, 195, 220);
+        }
+    }
+
+    .giftcard {
+        
+        padding: 0 0 20px 0;
+
+        .giftcard-icon {
+            text-align: right;
+            font-size: 50px;
+            padding-right: 20px;
+            color: rgb(255, 220, 75);
+        }
+
+    }
+
+    .respond {
+        text-align: center;
+    }
+}
+    
