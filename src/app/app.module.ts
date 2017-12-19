@@ -6,12 +6,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { ActivityPage } from '../pages/activity/activity';
+import { ContactsPage } from '../pages/contacts/contacts';
+import { GiftcardPage } from '../pages/giftcard/giftcard';
 import { IntroPage } from '../pages/intro/intro';
 import { KickoutPage } from '../pages/kickout/kickout';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { MyGiftsPage } from '../pages/mygifts/mygifts';
 import { NewGiftPage } from '../pages/newgift/newgift';
+import { NewMessagePage } from '../pages/newmessage/newmessage';
+import { ObjectsPage } from '../pages/objects/objects';
 import { OpenMessagePage } from '../pages/openmessage/openmessage';
 import { OpenMyGiftPage } from '../pages/openmygift/openmygift';
 import { OpenObjectPage } from '../pages/openobject/openobject';
@@ -36,6 +40,8 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
   declarations: [
     MyApp,
     ActivityPage,
+    ContactsPage,
+    GiftcardPage,
     IntroPage,
     KickoutPage,
     LoginPage,
@@ -65,6 +71,8 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
   entryComponents: [
     MyApp,
     ActivityPage,
+    ContactsPage,
+    GiftcardPage,
     IntroPage,
     KickoutPage,
     LoginPage,

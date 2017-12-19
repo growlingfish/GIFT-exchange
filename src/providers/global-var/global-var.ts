@@ -46,6 +46,10 @@ export class GlobalVarProvider {
     return this.getApiBase() + "responses/" + userId;
   }
 
+  getFinaliseGiftURL (userId) {
+    return this.getApiBase() + "new/gift/" + userId;
+  }
+
   getUnwrappedURL (giftId, receiverId) {
     return this.getApiBase() + "unwrapped/gift/" + giftId + "/" + receiverId;
   }

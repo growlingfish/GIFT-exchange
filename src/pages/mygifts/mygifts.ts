@@ -31,8 +31,7 @@ export class MyGiftsPage {
       
       if (val && val.trim() != '') {
         this.gifts = this.gifts.filter((gift) => {
-          return (gift.post_title.toLowerCase().indexOf(val.toLowerCase()) > -1)
-            || (gift.post_author_data.nickname.toLowerCase().indexOf(val.toLowerCase()) > -1);
+          return gift.author.nickname.toLowerCase().indexOf(val.toLowerCase()) > -1;
         })
       }
     });

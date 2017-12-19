@@ -39,6 +39,25 @@ interface UpdateActivityResponse {
   responses: Array<Object>;
 }
 
+interface UpdateContactsResponse {
+  success: boolean;
+  contacts: Array<Object>;
+}
+
+interface UpdateObjectsResponse {
+  success: boolean;
+  objects: Array<Object>;
+}
+
+interface UpdateLocationsResponse {
+  success: boolean;
+  locations: Array<Object>;
+}
+
+interface FinaliseGiftResponse {
+  success: boolean;
+}
+
 interface UnwrappedGiftResponse {
   success: boolean;
 }
@@ -407,7 +426,7 @@ export class UserProvider {
       console.log("Failed getting received gifts");
     });
 
-    /*this.updateContacts().subscribe(complete => {
+    this.updateContacts().subscribe(complete => {
       if (complete) {
         console.log("Succeeded getting contacts");
       } else {
@@ -447,7 +466,7 @@ export class UserProvider {
     },
     error => {
       console.log("Failed getting locations");
-    });*/
+    });
 
     this.updateActivity().subscribe(complete => {
       if (complete) {
@@ -516,11 +535,13 @@ export class UserProvider {
     });
   }
 
-  /*updateContacts (): Observable<any> {
+  updateContacts (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
-        this.http.get(this.globalVar.getContactsURL(data.ID))
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.http.get<UpdateContactsResponse>(this.globalVar.getContactsURL(data.ID), {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setContacts(data.contacts);
@@ -535,15 +556,15 @@ export class UserProvider {
             observer.next(false);
             observer.complete();
           });
+        });
       });
     });
   }
 
   updateObjects (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
-        this.http.get(this.globalVar.getObjectsURL(data.ID))
+      this.getUser().then(data => {
+        this.http.get<UpdateObjectsResponse>(this.globalVar.getObjectsURL(data.ID))
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setObjects(data.objects);
@@ -564,9 +585,8 @@ export class UserProvider {
 
   updateLocations (): Observable<any> {
     return Observable.create(observer => {
-      var user = this.getUser();
-      user.then(data => {
-        this.http.get(this.globalVar.getLocationsURL())
+      this.getUser().then(data => {
+        this.http.get<UpdateLocationsResponse>(this.globalVar.getLocationsURL())
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setLocations(data.locations);
@@ -583,7 +603,7 @@ export class UserProvider {
           });
       });
     });
-  }*/
+  }
 
   updateActivity (): Observable<any> {
     return Observable.create(observer => {
@@ -605,6 +625,35 @@ export class UserProvider {
           function (error) {
             observer.next(false);
             observer.complete();
+          });
+        });
+      });
+    });
+  }
+
+  sendGift () {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.getUnfinishedGift().then(gift => {
+            let body = new URLSearchParams();
+            body.append('gift', JSON.stringify(gift));
+            this.http.post<FinaliseGiftResponse>(this.globalVar.getFinaliseGiftURL(data.ID), body, {
+              headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+            })
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                observer.next(true);
+                observer.complete();
+              } else {
+                observer.next(false);
+                observer.complete();
+              }
+            },
+            function (error) {
+              observer.next(false);
+              observer.complete();
+            });
           });
         });
       });

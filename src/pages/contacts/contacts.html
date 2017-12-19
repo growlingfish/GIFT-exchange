@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Choose a Recipient</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-searchbar (ionInput)="filterContacts($event)"></ion-searchbar>
+
+  <ion-list>
+    <ion-item (click)="inviteNew()">
+      <ion-avatar item-start>
+        <img src="http://via.placeholder.com/32x32">
+      </ion-avatar>
+      Add a New Recipient
+      <button ion-button clear item-end color="secondary">Create</button>
+    </ion-item>
+
+    <ion-item-divider color="light">Already Registered recipients</ion-item-divider>
+
+    <ion-item *ngFor="let contact of contacts" (click)="invite(contact)">
+      <ion-avatar item-start>
+        <img [src]="contact.gravatar">
+      </ion-avatar>
+      {{contact.nickname}}
+      <button ion-button clear item-end color="secondary">Add</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

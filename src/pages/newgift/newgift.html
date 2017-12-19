@@ -1,18 +1,85 @@
-<!--
-  Generated template for the NewgiftPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>newgift</ion-title>
+    <ion-title>{{!!this.gift.recipient && !!this.gift.recipient.nickname ? "A Gift For " + this.gift.recipient.nickname : "Make a Gift"}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+
+  <ion-grid class="recipient">
+    <ion-row (click)="editRecipient()">
+      <ion-col col-3 class="recipient-icon">
+        <ion-icon [name]="recipientIcon()" [color]="recipientIconColour()"></ion-icon>
+      </ion-col>
+      <ion-col col-9>
+        <h2 [innerHTML]="recipientTitle()"></h2>
+        <p [innerHTML]="recipientSubtitle()"></p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="giftcard">
+    <ion-row (click)="editGiftcard()">
+      <ion-col col-3 class="giftcard-icon">
+        <ion-icon [name]="giftcardIcon()" [color]="giftcardIconColour()"></ion-icon>
+      </ion-col>
+      <ion-col col-9>
+        <h2 [innerHTML]="giftcardTitle()"></h2>
+        <p [innerHTML]="giftcardSubtitle()"></p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <ion-grid class="build">
+    <ion-row>
+      <ion-col>
+        <h2>Make a Gift Experience</h2>
+        <p>What will the experience contain?</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="parts">
+    <ion-row *ngFor="let part of [0,1,2]">
+      <ion-col col-4 class="component-1 {{partComplete(part) ? 'complete' : 'incomplete'}}" (click)="partCompleteInfo(part)">
+        <h2>{{part == 0 ? 'Start' : part == 1 ? 'Middle' : 'End'}}</h2>
+        <p>{{partComplete(part) ? 'Complete' : 'Incomplete'}}</p>
+      </ion-col>
+      <ion-col col-4 class="component-2 {{objectComplete(part) ? 'complete' : 'incomplete'}}" (click)="editObject(part)">
+        <h2><ion-icon name="image"></ion-icon></h2>
+        <p>{{objectComplete(part) ? this.gift.wraps[part].unwrap_object.post_title.substring(0,10) + '...' : 'Tap to add an object'}}</p>
+      </ion-col>
+      <ion-col col-4 class="component-3 {{payloadComplete(part) ? 'complete' : 'incomplete'}}" (click)="editMessage(part)">
+        <h2><ion-icon name="quote"></ion-icon></h2>
+        <p>{{payloadComplete(part) ? this.gift.payloads[part].post_content.substring(0,10) + '...' : 'Tap to add a message'}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="send">
+    <ion-row>
+      <ion-col>
+        <p>Are you happy with the Gift?</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block (click)="send()">Send Gift</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button color="danger" (click)="scrapGift()">Start Over Again</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
