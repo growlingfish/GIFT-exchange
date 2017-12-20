@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { LogoutPage } from '../logout/logout';
@@ -15,11 +15,13 @@ export class MyGiftsPage {
 
   private gifts: Array<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {}
 
   ionViewDidEnter () {
     this.userProvider.getMyGifts().then(data => {
-      this.gifts = data;
+      this.ngZone.run(() => {
+        this.gifts = data;
+      });
     });
   }
 

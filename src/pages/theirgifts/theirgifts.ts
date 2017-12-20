@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { LogoutPage } from '../logout/logout';
@@ -12,16 +12,19 @@ import { UserProvider } from '../../providers/user/user';
   templateUrl: 'theirgifts.html',
 })
 export class TheirGiftsPage {
-
+ 
   private gifts: Array<any>;
   private unfinished: boolean = false;
   private unfinishedTitle: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {}
 
   ionViewDidEnter () {
     this.userProvider.getTheirGifts().then(data => {
-      this.gifts = data;
+      this.ngZone.run(() => {
+        this.gifts = data;
+        console.log("Mupdated?");
+      });
     });
 
     this.userProvider.getUnfinishedGift().then(existingGift => {
