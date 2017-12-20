@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController, LoadingController, Loading }
 import { TabsPage } from '../tabs/tabs';
 import { TsAndCsPage } from '../tsandcs/tsandcs';
 import { LogoutPage } from '../logout/logout';
+import { KickoutPage } from '../kickout/kickout';
 
 import { UserProvider } from '../../providers/user/user';
 
@@ -26,8 +27,17 @@ export class LoginPage {
       if (data == null) {
         // not already logged in, fine
       } else {
-        this.userProvider.initialiseData();
-        this.userProvider.initialiseFCM();
+        this.userProvider.initialiseData().subscribe(success => {
+          if (!success) {
+            this.userProvider.logout().then(data => {
+              this.navCtrl.setRoot(KickoutPage);
+            });
+          }
+        }, error => {
+
+        }, () => {
+          this.userProvider.initialiseFCM();
+        });
         this.navCtrl.setRoot(LogoutPage);
       }
     });

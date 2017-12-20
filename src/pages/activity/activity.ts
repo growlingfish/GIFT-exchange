@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { LogoutPage } from '../logout/logout';
@@ -13,12 +13,14 @@ export class ActivityPage {
 
   private responses: Array<any>;
   
-    constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {
     }
   
     ionViewDidEnter () {
       this.userProvider.getActivity().then(data => {
-        this.responses = data.received;
+        this.ngZone.run(() => {
+          this.responses = data.received;
+        });
       });
     }
   

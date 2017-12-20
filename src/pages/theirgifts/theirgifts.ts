@@ -23,7 +23,6 @@ export class TheirGiftsPage {
     this.userProvider.getTheirGifts().then(data => {
       this.ngZone.run(() => {
         this.gifts = data;
-        console.log("Mupdated?");
       });
     });
 

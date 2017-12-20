@@ -9,9 +9,10 @@ import { Storage } from '@ionic/storage';
 
 import { FCM } from '@ionic-native/fcm';
 
-import { GlobalVarProvider } from '../global-var/global-var';
-
+import { LogoutPage } from '../../pages/logout/logout';
 import { KickoutPage } from '../../pages/kickout/kickout';
+
+import { GlobalVarProvider } from '../global-var/global-var';
 
 interface LoginResponse {
   user: Object;
@@ -185,10 +186,24 @@ export class UserProvider {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setUser(data.user).then(result => {
                 this.setGIFTToken(data.token).then(result => {
-                  this.initialiseData();
-                  this.initialiseFCM();
-                  observer.next(true);
-                  observer.complete();
+                  this.initialiseData().subscribe(success => {
+                    if (!success) {
+                      this.logout().then(data => {
+                        observer.next(false);
+                        observer.complete();
+                        this.app.getRootNav().setRoot(KickoutPage);
+                      });
+                    }
+                  }, error => {
+                    observer.next(false);
+                    observer.complete();
+                  }, () => {
+                    console.log("done?");
+                    this.initialiseFCM();
+                    this.app.getRootNav().setRoot(LogoutPage);
+                    observer.next(true);
+                    observer.complete();
+                  });
                 });
               });
             } else {
@@ -397,89 +412,104 @@ export class UserProvider {
     });
   }
 
-  public initialiseData () {
-    this.updateTheirGifts().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting sent gifts");
-      } else {
-        console.log("Failed getting sent gifts ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting sent gifts");
-    });
+  public initialiseData (): Observable<any> {
+    return Observable.create(observer => {
+      this.updateTheirGifts().subscribe(complete => {
+        if (complete) {
+          console.log("Succeeded getting sent gifts");
+          observer.next(true);
 
-    this.updateMyGifts().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting received gifts");
-      } else {
-        console.log("Failed getting received gifts ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting received gifts");
-    });
+          this.updateMyGifts().subscribe(complete => {
+            if (complete) {
+              console.log("Succeeded getting received gifts");
+              observer.next(true);
 
-    this.updateContacts().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting contacts");
-      } else {
-        console.log("Failed getting contacts ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting contacts");
-    });
+              this.updateContacts().subscribe(complete => {
+                if (complete) {
+                  console.log("Succeeded getting contacts");
+                  observer.next(true);
 
-    this.updateObjects().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting objects");
-      } else {
-        console.log("Failed getting objects ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting objects");
-    });
+                  this.updateObjects().subscribe(complete => {
+                    if (complete) {
+                      console.log("Succeeded getting objects");
+                      observer.next(true);
 
-    this.updateLocations().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting locations");
-      } else {
-        console.log("Failed getting locations ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting locations");
-    });
+                      this.updateLocations().subscribe(complete => {
+                        if (complete) {
+                          console.log("Succeeded getting locations");
+                          observer.next(true);
 
-    this.updateActivity().subscribe(complete => {
-      if (complete) {
-        console.log("Succeeded getting activity");
-      } else {
-        console.log("Failed getting activity ... kicking out");
-        this.logout().then(data => {
-          this.app.getRootNav().setRoot(KickoutPage);
-        });
-      }
-    },
-    error => {
-      console.log("Failed getting activity");
+                          this.updateActivity().subscribe(complete => {
+                            if (complete) {
+                              console.log("Succeeded getting activity");
+                              observer.next(true);
+                              observer.complete();
+                            } else {
+                              console.log("Failed getting activity ... kicking out");
+                              observer.next(false);
+                              observer.complete();
+                            }
+                          },
+                          error => {
+                            console.log("Failed getting activity");
+                            observer.next(false);
+                            observer.complete();
+                          });
+                        } else {
+                          console.log("Failed getting locations ... kicking out");
+                          observer.next(false);
+                          observer.complete();
+                        }
+                      },
+                      error => {
+                        console.log("Failed getting locations");
+                        observer.next(false);
+                        observer.complete();
+                      });
+                    } else {
+                      console.log("Failed getting objects ... kicking out");
+                      observer.next(false);
+                      observer.complete();
+                    }
+                  },
+                  error => {
+                    console.log("Failed getting objects");
+                    observer.next(false);
+                    observer.complete();
+                  });
+                } else {
+                  console.log("Failed getting contacts ... kicking out");
+                  observer.next(false);
+                  observer.complete();
+                }
+              },
+              error => {
+                console.log("Failed getting contacts");
+                observer.next(false);
+                observer.complete();
+              });
+            } else {
+              console.log("Failed getting received gifts ... kicking out");
+              observer.next(false);
+              observer.complete();
+            }
+          },
+          error => {
+            console.log("Failed getting received gifts");
+            observer.next(false);
+            observer.complete();
+          });
+        } else {
+          console.log("Failed getting sent gifts ... kicking out");
+          observer.next(false);
+          observer.complete();
+        }
+      },
+      error => {
+        console.log("Failed getting sent gifts");
+        observer.next(false);
+        observer.complete();
+      });
     });
   }
 
