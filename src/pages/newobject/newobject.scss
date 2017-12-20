@@ -1,0 +1,36 @@
+page-newobject {
+
+    .photo {
+        
+        color: white;
+
+        padding: 40px 0 20px 0;
+
+        .photo-icon {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+    }
+
+    .add {
+        text-align: center;
+    }
+
+    ion-textarea {
+        border: 1px dotted #CCCCCC;
+    }
+
+    ion-input {
+        border-bottom: 1px dotted #CCCCCC;
+    }
+
+    ion-card-header {
+        font-weight: bold;
+
+        ion-icon {
+            float: right;
+        }
+    }
+
+}

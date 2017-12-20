@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the GiftcardPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LogoutPage } from '../logout/logout';
+
+import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'page-giftcard',
@@ -14,11 +11,35 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class GiftcardPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private message: string = "";
+  private buttonAction: string = "Add message";
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad GiftcardPage');
+  ionViewDidEnter () {
+    this.userProvider.getUnfinishedGift().then(gift => {
+      if (gift.giftcards[0].post_content.length > 0) {
+        this.message = gift.giftcards[0].post_content;
+        this.buttonAction = "Update message";
+      }
+    });
   }
 
+  logout () {
+    this.navCtrl.push(LogoutPage);
+  }
+
+  addMessage () {
+    this.userProvider.getUnfinishedGift().then(gift => {
+      gift.giftcards[0].post_content = this.message;
+      this.userProvider.setUnfinishedGift(gift).then(data => {
+        this.navCtrl.pop();
+      });
+    });
+  }
+
+  cancel () {
+    this.navCtrl.pop();
+  }
 }

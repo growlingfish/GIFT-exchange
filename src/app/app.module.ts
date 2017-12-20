@@ -9,12 +9,14 @@ import { ActivityPage } from '../pages/activity/activity';
 import { ContactsPage } from '../pages/contacts/contacts';
 import { GiftcardPage } from '../pages/giftcard/giftcard';
 import { IntroPage } from '../pages/intro/intro';
+import { InvitePage } from '../pages/invite/invite';
 import { KickoutPage } from '../pages/kickout/kickout';
 import { LoginPage } from '../pages/login/login';
 import { LogoutPage } from '../pages/logout/logout';
 import { MyGiftsPage } from '../pages/mygifts/mygifts';
 import { NewGiftPage } from '../pages/newgift/newgift';
 import { NewMessagePage } from '../pages/newmessage/newmessage';
+import { NewObjectPage } from '../pages/newobject/newobject';
 import { ObjectsPage } from '../pages/objects/objects';
 import { OpenMessagePage } from '../pages/openmessage/openmessage';
 import { OpenMyGiftPage } from '../pages/openmygift/openmygift';
@@ -22,14 +24,20 @@ import { OpenObjectPage } from '../pages/openobject/openobject';
 import { RegisterPage } from '../pages/register/register';
 import { RespondPage } from '../pages/respond/respond';
 import { ReviewGiftPage } from '../pages/reviewgift/reviewgift';
-import { ReviewObjectPage } from '../pages/reviewobject/reviewobject';
 import { ReviewMessagePage } from '../pages/reviewmessage/reviewmessage';
 import { ReviewMyGiftPage } from '../pages/reviewmygift/reviewmygift';
+import { ReviewObjectPage } from '../pages/reviewobject/reviewobject';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
+import { ViewObjectPage } from '../pages/viewobject/viewobject';
 
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
+import { FileTransfer } from '@ionic-native/file-transfer';
 import { FCM } from '@ionic-native/fcm';
+import { ImageResizer } from '@ionic-native/image-resizer';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -43,11 +51,13 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     ContactsPage,
     GiftcardPage,
     IntroPage,
+    InvitePage,
     KickoutPage,
     LoginPage,
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    NewObjectPage,
     OpenMessagePage,
     OpenMyGiftPage,
     OpenObjectPage,
@@ -59,7 +69,8 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     ReviewMyGiftPage,
     TabsPage,
     TheirGiftsPage,
-    TsAndCsPage
+    TsAndCsPage,
+    ViewObjectPage
   ],
   imports: [
     BrowserModule,
@@ -74,11 +85,13 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     ContactsPage,
     GiftcardPage,
     IntroPage,
+    InvitePage,
     KickoutPage,
     LoginPage,
     LogoutPage,
     MyGiftsPage,
     NewGiftPage,
+    NewObjectPage,
     OpenMessagePage,
     OpenMyGiftPage,
     OpenObjectPage,
@@ -90,10 +103,16 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     ReviewMyGiftPage,
     TabsPage,
     TheirGiftsPage,
-    TsAndCsPage
+    TsAndCsPage,
+    ViewObjectPage
   ],
   providers: [
+    Camera,
     FCM,
+    File,
+    FilePath,
+    FileTransfer, 
+    ImageResizer, 
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

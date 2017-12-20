@@ -34,8 +34,20 @@ export class GlobalVarProvider {
     return this.getApiBase() + "contacts/" + userId;
   }
 
+  getInviteURL (userId, email, name) {
+    return this.getApiBase() + "new/receiver/" + email + "/" + name + "/" + userId;
+  }
+
   getObjectsURL (userId) {
     return this.getApiBase() + "objects/" + userId;
+  }
+
+  getObjectPhotoUploadURL () {
+    return this.getApiBase() + "upload/object/";
+  }
+
+  getFinaliseObjectURL (userId) {
+    return this.getApiBase() + "new/object/" + userId;
   }
 
   getLocationsURL () {

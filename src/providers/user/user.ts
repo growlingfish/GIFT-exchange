@@ -50,9 +50,20 @@ interface UpdateObjectsResponse {
   objects: Array<Object>;
 }
 
+interface FinaliseObjectResponse {
+  success: boolean;
+  object: Object;
+  thumbnail: string;
+}
+
 interface UpdateLocationsResponse {
   success: boolean;
   locations: Array<Object>;
+}
+
+interface InviteResponse {
+  success: boolean;
+  user: Object;
 }
 
 interface FinaliseGiftResponse {
@@ -646,6 +657,59 @@ export class UserProvider {
             if (typeof data.success !== 'undefined' && data.success) {
               this.setActivity(data.responses);
               observer.next(true);
+              observer.complete();
+            } else {
+              observer.next(false);
+              observer.complete();
+            }
+          },
+          function (error) {
+            observer.next(false);
+            observer.complete();
+          });
+        });
+      });
+    });
+  }
+
+  invite (email: string, name: string): Observable<any> {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.http.get<InviteResponse>(this.globalVar.getInviteURL(data.ID, email, name), {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
+          .subscribe(data => {
+            if (typeof data.success !== 'undefined' && data.success) {
+              observer.next(data.user);
+              observer.complete();
+            } else {
+              observer.next(false);
+              observer.complete();
+            }
+          },
+          function (error) {
+            observer.next(false);
+            observer.complete();
+          });
+        });
+      });
+    });
+  }
+
+  finaliseObject (object: any, name: string) {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          let body = new URLSearchParams();
+          body.append('object', JSON.stringify(object));
+          body.append('name', name);
+          this.http.post<FinaliseObjectResponse>(this.globalVar.getFinaliseObjectURL(data.ID), body, {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
+          .subscribe(data => {
+            if (typeof data.success !== 'undefined' && data.success) {
+              observer.next(data.object);
               observer.complete();
             } else {
               observer.next(false);
