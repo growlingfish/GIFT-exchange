@@ -701,10 +701,10 @@ export class UserProvider {
     return Observable.create(observer => {
       this.getUser().then(data => {
         this.getGIFTToken().then(tokenData => {
-          let body = new URLSearchParams();
-          body.append('object', JSON.stringify(object));
-          body.append('name', name);
-          this.http.post<FinaliseObjectResponse>(this.globalVar.getFinaliseObjectURL(data.ID), body, {
+          this.http.post<FinaliseObjectResponse>(this.globalVar.getFinaliseObjectURL(data.ID), {
+            object: JSON.stringify(object),
+            name: name
+          }, {
             headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
           })
           .subscribe(data => {
@@ -730,9 +730,9 @@ export class UserProvider {
       this.getUser().then(data => {
         this.getGIFTToken().then(tokenData => {
           this.getUnfinishedGift().then(gift => {
-            let body = new URLSearchParams();
-            body.append('gift', JSON.stringify(gift));
-            this.http.post<FinaliseGiftResponse>(this.globalVar.getFinaliseGiftURL(data.ID), body, {
+            this.http.post<FinaliseGiftResponse>(this.globalVar.getFinaliseGiftURL(data.ID), {
+              gift: JSON.stringify(gift)
+            },{
               headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
             })
             .subscribe(data => {

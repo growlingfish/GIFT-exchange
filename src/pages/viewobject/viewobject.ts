@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ViewobjectPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-viewobject',
   templateUrl: 'viewobject.html',
 })
-export class ViewobjectPage {
+export class ViewObjectPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private object: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+    this.object = navParams.get('object');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewobjectPage');
+  use () {
+    this.viewCtrl.dismiss(true);
+  }
+
+  cancel () {
+    this.viewCtrl.dismiss(false);
   }
 
 }
