@@ -38,8 +38,8 @@ export class GlobalVarProvider {
     return this.getApiBase() + "new/receiver/" + email + "/" + name + "/" + userId;
   }
 
-  getObjectsURL (userId) {
-    return this.getApiBase() + "objects/" + userId;
+  getObjectsURL (venueId, userId) {
+    return this.getApiBase() + "objects/" + venueId + "/" + userId;
   }
 
   getObjectPhotoUploadURL () {

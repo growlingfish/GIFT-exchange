@@ -629,20 +629,22 @@ export class UserProvider {
   updateObjects (): Observable<any> {
     return Observable.create(observer => {
       this.getUser().then(data => {
-        this.http.get<UpdateObjectsResponse>(this.globalVar.getObjectsURL(data.ID))
-          .subscribe(data => {
-            if (typeof data.success !== 'undefined' && data.success) {
-              this.setObjects(data.objects);
-              observer.next(true);
-              observer.complete();
-            } else {
+        this.getVenue().then(venue => {
+          this.http.get<UpdateObjectsResponse>(this.globalVar.getObjectsURL(venue.ID, data.ID))
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                this.setObjects(data.objects);
+                observer.next(true);
+                observer.complete();
+              } else {
+                observer.next(false);
+                observer.complete();
+              }
+            },
+            function (error) {
               observer.next(false);
               observer.complete();
-            }
-          },
-          function (error) {
-            observer.next(false);
-            observer.complete();
+            });
           });
       });
     });
