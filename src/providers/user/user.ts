@@ -56,6 +56,11 @@ interface FinaliseObjectResponse {
   thumbnail: string;
 }
 
+interface UpdateVenuesResponse {
+  success: boolean;
+  venues: Array<Object>;
+}
+
 interface UpdateLocationsResponse {
   success: boolean;
   locations: Array<Object>;
@@ -97,6 +102,14 @@ export class UserProvider {
 
   public setUser (val: any): Promise<any> {
     return this.storage.ready().then(() => this.storage.set('user', val));
+  }
+
+  public getVenue (): Promise<any> {
+    return this.storage.ready().then(() => this.storage.get('venue'));
+  }
+
+  public setVenue (val: any): Promise<any> {
+    return this.storage.ready().then(() => this.storage.set('venue', val));
   }
 
   public getGIFTToken (): Promise<string> {
@@ -147,6 +160,14 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.set('objects', val));
   }
 
+  public getVenues (): Promise<any> {
+    return this.storage.ready().then(() => this.storage.get('venues'));
+  }
+
+  public setVenues (val: any): Promise<any> {
+    return this.storage.ready().then(() => this.storage.set('venues', val));
+  }
+
   public getLocations (): Promise<any> {
     return this.storage.ready().then(() => this.storage.get('locations'));
   }
@@ -187,45 +208,48 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.remove('unopenedGift' + giftId));
   }
 
-  public login (username: string, password: string) {
-    if (username === null || password === null) {
+  public login (username: string, password: string, venue: Object) {
+    if (venue === null) {
+      return Observable.throw("Venue not chosen");
+    } else if (username === null || password === null) {
       return Observable.throw("Username or password missing");
     } else {
       return Observable.create(observer => {
-        this.http.get<LoginResponse>(this.globalVar.getAuthURL(username, password))
-          .subscribe(data => {
-            if (typeof data.success !== 'undefined' && data.success) {
-              this.setUser(data.user).then(result => {
-                this.setGIFTToken(data.token).then(result => {
-                  this.initialiseData().subscribe(success => {
-                    if (!success) {
-                      this.logout().then(data => {
-                        observer.next(false);
-                        observer.complete();
-                        this.app.getRootNav().setRoot(KickoutPage);
-                      });
-                    }
-                  }, error => {
-                    observer.next(false);
-                    observer.complete();
-                  }, () => {
-                    console.log("done?");
-                    this.initialiseFCM();
-                    this.app.getRootNav().setRoot(LogoutPage);
-                    observer.next(true);
-                    observer.complete();
+        this.setVenue(venue).then(result => {
+          this.http.get<LoginResponse>(this.globalVar.getAuthURL(username, password))
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                this.setUser(data.user).then(result => {
+                  this.setGIFTToken(data.token).then(result => {
+                    this.initialiseData().subscribe(success => {
+                      if (!success) {
+                        this.logout().then(data => {
+                          observer.next(false);
+                          observer.complete();
+                          this.app.getRootNav().setRoot(KickoutPage);
+                        });
+                      }
+                    }, error => {
+                      observer.next(false);
+                      observer.complete();
+                    }, () => {
+                      this.initialiseFCM();
+                      this.app.getRootNav().setRoot(LogoutPage);
+                      observer.next(true);
+                      observer.complete();
+                    });
                   });
                 });
-              });
-            } else {
+              } else {
+                observer.next(false);
+                observer.complete();
+              }
+            },
+            function (error) {
               observer.next(false);
               observer.complete();
-            }
-          },
-          function (error) {
-            observer.next(false);
-            observer.complete();
-          });
+            });
+        });
       });
     }
   }
@@ -624,13 +648,13 @@ export class UserProvider {
     });
   }
 
-  updateLocations (): Observable<any> {
+  updateVenues (): Observable<any> {
     return Observable.create(observer => {
       this.getUser().then(data => {
-        this.http.get<UpdateLocationsResponse>(this.globalVar.getLocationsURL())
+        this.http.get<UpdateVenuesResponse>(this.globalVar.getVenuesURL())
           .subscribe(data => {
             if (typeof data.success !== 'undefined' && data.success) {
-              this.setLocations(data.locations);
+              this.setVenues(data.venues);
               observer.next(true);
               observer.complete();
             } else {
@@ -642,6 +666,30 @@ export class UserProvider {
             observer.next(false);
             observer.complete();
           });
+      });
+    });
+  }
+
+  updateLocations (): Observable<any> {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getVenue().then(venue => {
+          this.http.get<UpdateLocationsResponse>(this.globalVar.getLocationsURL(venue.ID))
+            .subscribe(data => {
+              if (typeof data.success !== 'undefined' && data.success) {
+                this.setLocations(data.locations);
+                observer.next(true);
+                observer.complete();
+              } else {
+                observer.next(false);
+                observer.complete();
+              }
+            },
+            function (error) {
+              observer.next(false);
+              observer.complete();
+            });
+        });
       });
     });
   }

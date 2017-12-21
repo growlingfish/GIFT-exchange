@@ -16,7 +16,13 @@ export class LoginPage {
 
   username: string;
   password: string;
+  venues: Array<Object>;
+  venue: any;
   loading: Loading;
+  selectOptions = {
+    title: 'Which venue are you visiting?',
+    subTitle: 'Choose the appropriate venue from this list'
+  };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private userProvider: UserProvider, private loadingCtrl: LoadingController) {
     
@@ -25,8 +31,21 @@ export class LoginPage {
   ionViewWillEnter () {
     this.userProvider.getUser().then(data => {
       if (data == null) {
-        // not already logged in, fine
+        this.showLoading();
+        this.userProvider.updateVenues().subscribe(complete => {
+          if (complete) {
+            this.userProvider.getVenues().then(venues => {
+              this.venues = venues;
+              this.loading.dismiss();
+            });
+          } else {
+            this.navCtrl.setRoot(KickoutPage);
+          }
+        }, error => {
+          this.navCtrl.setRoot(KickoutPage);
+        });
       } else {
+        this.showLoading();
         this.userProvider.initialiseData().subscribe(success => {
           if (!success) {
             this.userProvider.logout().then(data => {
@@ -34,18 +53,22 @@ export class LoginPage {
             });
           }
         }, error => {
-
+          this.userProvider.logout().then(data => {
+            this.navCtrl.setRoot(KickoutPage);
+          });
         }, () => {
-          this.userProvider.initialiseFCM();
+          this.userProvider.getVenue().then(venue => {
+            this.userProvider.initialiseFCM();
+            this.navCtrl.setRoot(LogoutPage);
+          });
         });
-        this.navCtrl.setRoot(LogoutPage);
       }
     });
   }
 
   login() {
     this.showLoading();
-    this.userProvider.login(this.username, this.password).subscribe(allowed => {
+    this.userProvider.login(this.username, this.password, this.venue).subscribe(allowed => {
       if (allowed) {
         this.navCtrl.setRoot(TabsPage);
       } else {

@@ -50,8 +50,12 @@ export class GlobalVarProvider {
     return this.getApiBase() + "new/object/" + userId;
   }
 
-  getLocationsURL () {
-    return this.getApiBase() + "locations/";
+  getVenuesURL () {
+    return this.getApiBase() + "venues/";
+  }
+
+  getLocationsURL (venueId) {
+    return this.getApiBase() + "locations/" + venueId;
   }
 
   getActivityURL (userId) {

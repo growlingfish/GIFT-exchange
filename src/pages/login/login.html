@@ -10,6 +10,12 @@
   <ion-grid>
     <ion-row justify-content-center align-items-center>
       <div class="outer">
+          <ion-item>
+              <ion-label>Tap here to choose</ion-label>
+              <ion-select [(ngModel)]="venue" multiple="false" [selectOptions]="selectOptions">
+                <ion-option *ngFor="let v of venues" [value]="v">{{v.name}}</ion-option>
+              </ion-select>
+            </ion-item>                
         <form (ngSubmit)="login()" #loginForm="ngForm">
         
           <ion-list inset>

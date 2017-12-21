@@ -12,7 +12,7 @@ import { UserProvider } from '../../providers/user/user';
 })
 export class RegisterPage {
 
-  username: string;
+  username: string; 
   password: string;
   email: string;
   name: string;
@@ -37,12 +37,14 @@ export class RegisterPage {
     this.userProvider.logout();
     this.userProvider.register(this.username, this.password, this.email, this.name).subscribe(success => {
       if (success) {
-        this.userProvider.login(this.username, this.password).subscribe(success => {
-          if (success) {
-            this.navCtrl.setRoot(TabsPage);  
-          } else {
-            this.showError("Cannot login");
-          }
+        this.userProvider.getVenue().then(venue => {
+          this.userProvider.login(this.username, this.password, venue.ID).subscribe(success => {
+            if (success) {
+              this.navCtrl.setRoot(TabsPage);  
+            } else {
+              this.showError("Cannot login");
+            }
+          });
         });
       } else {
         this.showError("User already registered");
