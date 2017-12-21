@@ -12,20 +12,25 @@ import { UserProvider } from '../../providers/user/user';
 export class ActivityPage {
 
   private responses: Array<any>;
+  private userID: number;
   
-    constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {
-    }
-  
-    ionViewDidEnter () {
-      this.userProvider.getActivity().then(data => {
-        this.ngZone.run(() => {
-          this.responses = data.received;
-        });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {
+    this.userID = 0;
+    this.userProvider.getUser().then(data => {
+      this.userID = data.ID;
+    });
+  }
+
+  ionViewDidEnter () {
+    this.userProvider.getActivity().then(data => {
+      this.ngZone.run(() => {
+        this.responses = data;
       });
-    }
-  
-    logout () {
-      this.navCtrl.push(LogoutPage);
-    }
+    });
+  }
+
+  logout () {
+    this.navCtrl.push(LogoutPage);
+  }
 
 }

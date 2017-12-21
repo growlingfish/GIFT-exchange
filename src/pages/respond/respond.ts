@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 
-/**
- * Generated class for the RespondPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { TabsPage } from '../tabs/tabs';
+
+import { UserProvider } from '../../providers/user/user';
 
 @Component({
   selector: 'page-respond',
@@ -14,11 +11,46 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class RespondPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private message: string = "";
+  private giftID: number;
+  private owner: number;
+  loading: Loading;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+    this.giftID = navParams.get('giftID');
+    this.owner = navParams.get('owner');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RespondPage');
+  sendMessage () {
+    this.loading = this.loadingCtrl.create({
+      content: 'Sending your response ... ',
+      duration: 10000
+    });
+    this.loading.present();
+    this.userProvider.sendResponse(this.giftID, this.message, this.owner).subscribe(complete => {
+      if (complete) {
+        this.navCtrl.setRoot(TabsPage);
+      } else {
+        this.showError();
+      }
+      this.loading.dismissAll();
+    },
+    error => {        
+      this.loading.dismissAll();
+      this.showError();
+    });
   }
 
+  showError() {
+    let alert = this.alertCtrl.create({
+      title: 'Response unsuccessful',
+      subTitle: 'Please try again later',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  cancel () {
+    this.navCtrl.setRoot(TabsPage);
+  }
 }

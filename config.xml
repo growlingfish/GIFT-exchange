@@ -92,4 +92,7 @@
     <plugin name="cordova-plugin-filepath" spec="^1.1.0" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.0" />
     <plugin name="info.protonet.imageresizer" spec="^0.1.1" />
+    <plugin name="cordova-plugin-shake" spec="^0.6.0" />
+    <plugin name="cordova-plugin-nativeaudio" spec="^3.0.9" />
+    <plugin name="com.moust.cordova.videoplayer" spec="https://github.com/moust/cordova-plugin-videoplayer.git" />
 </widget>

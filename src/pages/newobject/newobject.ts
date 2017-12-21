@@ -182,12 +182,7 @@ export class NewObjectPage {
       fileKey: "file",
       fileName: filename,
       chunkedMode: false,
-      mimeType: "multipart/form-data"/*,
-      params : {
-        'fileName': filename,
-        'wrapId': this.wrapId,
-        'userId': this.auth.currentUser.id
-      }*/
+      mimeType: "multipart/form-data"
     };
 
     const fileTransfer: FileTransferObject = this.transfer.create();

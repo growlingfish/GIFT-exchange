@@ -1,12 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the OpenobjectPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-openobject',
@@ -14,11 +7,33 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class OpenObjectPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private object: any;
+  private part: number;
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public alertCtrl: AlertController) {
+    this.object = navParams.get('object');
+    this.part = navParams.get('part');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad OpenobjectPage');
+  found () {
+    this.viewCtrl.dismiss({
+      found: true
+    });
+  }
+  
+  dismiss () {
+    this.viewCtrl.dismiss({
+      found: false
+    });
+  }
+
+  help () {
+    let alert = this.alertCtrl.create({
+      title: "Here's a hint",
+      subTitle: "This object is in: " + this.object.location.post_title,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

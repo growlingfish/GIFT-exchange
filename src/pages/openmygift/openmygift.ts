@@ -35,7 +35,7 @@ export class OpenMyGiftPage {
 
       if (this.gift.status.received == false) {
         this.loading = this.loadingCtrl.create({
-          content: 'Letting ' + this.gift.post_author_data.nickname + ' know that you have received this gift ...',
+          content: 'Letting ' + this.gift.author.nickname + ' know that you have received this gift ...',
           duration: 10000
         });
         this.loading.present();
@@ -70,7 +70,7 @@ export class OpenMyGiftPage {
   showError() {
     let alert = this.alertCtrl.create({
       title: 'Gift update unsuccessful',
-      subTitle: 'The message to ' + this.gift.post_author_data.nickname + ' will be delayed',
+      subTitle: 'The message to ' + this.gift.author.nickname + ' will be delayed',
       buttons: ['OK']
     });
     alert.present();
@@ -124,7 +124,7 @@ export class OpenMyGiftPage {
             this.navCtrl.pop();
           } else {
             this.loading = this.loadingCtrl.create({
-              content: 'Letting ' + this.gift.post_author_data.nickname + ' know that you have unwrapped this gift ...',
+              content: 'Letting ' + this.gift.author.nickname + ' know that you have unwrapped this gift ...',
               duration: 10000
             });
             this.loading.present();
@@ -157,7 +157,7 @@ export class OpenMyGiftPage {
     this.gift.status.responded = true;
     this.navCtrl.push(RespondPage, {
       giftID: this.gift.ID,
-      owner: this.gift.post_author
+      owner: this.gift.author
     });
   }
 

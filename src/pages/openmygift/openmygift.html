@@ -20,7 +20,7 @@
         <ion-icon name="contact"></ion-icon>
       </ion-col>
       <ion-col col-9>
-        <h2>From {{gift.post_author_data.nickname}}</h2>
+        <h2>From {{gift.author.nickname}}</h2>
         <p>Sent at {{gift.post_date}}</p>
       </ion-col>
     </ion-row>
@@ -60,7 +60,7 @@
   <ion-grid class="respond" *ngIf="allComplete() && this.gift.status.responded == false">
     <ion-row>
       <ion-col>
-        <p>Now that you have experienced your Gift, would you like to respond to {{gift.post_author_data.nickname}}?</p>
+        <p>Now that you have experienced your Gift, would you like to respond to {{gift.author.nickname}}?</p>
       </ion-col>
     </ion-row>
     <ion-row>

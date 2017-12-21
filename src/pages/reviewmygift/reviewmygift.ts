@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 
-/**
- * Generated class for the ReviewmygiftPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LogoutPage } from '../logout/logout';
+import { ReviewObjectPage } from '../reviewobject/reviewobject';
+import { ReviewMessagePage } from '../reviewmessage/reviewmessage';
 
 @Component({
   selector: 'page-reviewmygift',
@@ -14,11 +11,34 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ReviewMyGiftPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  gift: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+    this.gift = navParams.get('gift');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewmygiftPage');
+  ionViewCanEnter(): boolean {
+    if (this.navParams.get('gift')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
+  logout () {
+    this.navCtrl.push(LogoutPage);
+  }
+
+  viewObject (part) {
+    this.modalCtrl.create(ReviewObjectPage, { 
+      object: this.gift.wraps[part].unwrap_object,
+      part: part
+    }).present();
+  }
+
+  viewMessage (part) {
+    this.modalCtrl.create(ReviewMessagePage, {
+      message: this.gift.payloads[part].post_content
+    }).present();
+  }
 }

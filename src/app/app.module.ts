@@ -38,8 +38,11 @@ import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { FCM } from '@ionic-native/fcm';
 import { ImageResizer } from '@ionic-native/image-resizer';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { Shake } from '@ionic-native/shake';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { VideoPlayer } from '@ionic-native/video-player';
 
 import { UserProvider } from '../providers/user/user';
 import { GlobalVarProvider } from '../providers/global-var/global-var';
@@ -116,12 +119,15 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     File,
     FilePath,
     FileTransfer, 
-    ImageResizer, 
+    GlobalVarProvider,
+    ImageResizer,
+    NativeAudio,
+    Shake,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserProvider,
-    GlobalVarProvider
+    VideoPlayer
   ]
 })
 export class AppModule {}

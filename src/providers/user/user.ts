@@ -83,6 +83,10 @@ interface ReceivedGiftResponse {
   success: boolean;
 }
 
+interface SendResponseResponse {
+  success: boolean;
+}
+
 @Injectable()
 export class UserProvider {
 
@@ -852,6 +856,37 @@ export class UserProvider {
               observer.next(false);
               observer.complete();
             });
+          });
+        });
+      });
+    });
+  }
+
+  sendResponse (giftId, response, owner) {
+    return Observable.create(observer => {
+      this.getUser().then(data => {
+        this.getGIFTToken().then(tokenData => {
+          this.http.post<SendResponseResponse>(this.globalVar.getResponseURL(giftId), {
+            response: response,
+            sender: data.ID
+          }, {
+            headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
+          })
+          .subscribe(data => {
+            if (typeof data.success !== 'undefined' && data.success) {
+              observer.next(true);
+              observer.complete();
+            } else {
+              observer.next(false);
+              observer.complete();
+            }
+          },
+          function (error) {
+            observer.next(false);
+            observer.complete();
+          },
+          () => {
+            this.updateActivity();
           });
         });
       });
