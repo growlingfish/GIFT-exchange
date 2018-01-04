@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { App, Platform } from 'ionic-angular';
+import { App, Platform, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
 import { FCM } from '@ionic-native/fcm';
 
+import { TabsPage } from '../../pages/tabs/tabs';
 import { LogoutPage } from '../../pages/logout/logout';
 import { KickoutPage } from '../../pages/kickout/kickout';
 
@@ -89,8 +90,9 @@ interface SendResponseResponse {
 
 @Injectable()
 export class UserProvider {
+  loading: Loading;
 
-  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM) {}
+  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController) {}
 
   public getSeenIntro (): Promise<boolean> {
     return this.storage.ready().then(() => this.storage.get('seenIntro'));
@@ -212,6 +214,14 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.remove('unopenedGift' + giftId));
   }
 
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: true
+    });
+    this.loading.present();
+  }
+
   public login (username: string, password: string, venue: Object) {
     if (venue === null) {
       return Observable.throw("Venue not chosen");
@@ -312,31 +322,23 @@ export class UserProvider {
           console.log("FCM getToken failed ...");
         });
           
-        this.fcm.subscribeToTopic('giftNotifications');
-        console.log("Attempted to subscribe to giftNotifications");
+        this.fcm.subscribeToTopic('giftSent');
+        console.log("Attempted to subscribe to giftSent");
          
         this.fcm.onNotification().subscribe(data => {
-          if (data.wasTapped) { //Notification was received in notification tray (app is in background)
-            
-          } else { //Notification was received when app is in foreground
-          
-          }
-          switch (data.topic) {
-            /*case 'giftNotifications':
-              let alert = this.alertCtrl.create({
-                title: data.title,
-                subTitle: data.body,
-                buttons: ['OK']
-              });
-              alert.present();
-              break;
-            case 'giftDeliveries':
-              this.getUser().then(user => {
-                if (user == null) {
-                  // not logged in; no deliveries for me
-                } else {
+          this.getUser().then(user => {
+            if (user == null) {
+              // not logged in; no deliveries for me
+            } else {
+              /*if (data.wasTapped) { //Notification was received in notification tray (app is in background)
+                
+              } else { //Notification was received when app is in foreground
+              
+              }*/
+              switch (data.topic) {
+                case 'giftSent':
                   if (user.ID == data.recipientID) {
-                    let alert = this.alertCtrl.create({
+                    let alert = this.alertController.create({
                       title: "You've received a gift!",
                       message: 'Would you like to see your gifts now?',
                       buttons: [
@@ -351,7 +353,7 @@ export class UserProvider {
                               });
                               loading.present().then(()=>{
                                 this.updateMyGifts().subscribe(done => {
-                                  this.appCtrl.getRootNav().setRoot(TabsPage, {
+                                  this.app.getRootNav().setRoot(TabsPage, {
                                     tab: 1
                                   });
                                   loading.dismissAll();
@@ -376,16 +378,30 @@ export class UserProvider {
                     });
                     alert.present();
                   }
-                }
-              });
-              break;
-            case 'giftStatus':
-              this.getUser().then(user => {
-                if (user == null) {
-                  // not logged in; no status updates for me
-                } else {
-                  if (data.status == "responded" && data.owner == user.ID) {
-                    let alert = this.alertCtrl.create({
+                  break;
+                case 'giftUnwrapped':
+                  if (data.senderID == user.ID) {
+                    let alert = this.alertController.create({
+                      title: data.title,
+                      message: data.body,
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  }
+                  break;
+                case 'giftReceived':
+                  if (data.senderID == user.ID) {
+                    let alert = this.alertController.create({
+                      title: data.title,
+                      message: data.body,
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  }
+                  break;
+                case 'responseSent':
+                  if (data.owner == user.ID) {
+                    let alert = this.alertController.create({
                       title: data.title,
                       message: 'Would you like to see your messages now?',
                       buttons: [
@@ -400,7 +416,7 @@ export class UserProvider {
                               });
                               loading.present().then(()=>{
                                 this.updateActivity().subscribe(done => {
-                                  this.appCtrl.getRootNav().setRoot(TabsPage, {
+                                  this.app.getRootNav().setRoot(TabsPage, {
                                     tab: 2
                                   });
                                   loading.dismissAll();
@@ -424,21 +440,14 @@ export class UserProvider {
                       ]
                     });
                     alert.present();
-                  } else if (data.status != "responded" && data.senderID == user.ID) {
-                    let alert = this.alertCtrl.create({
-                      title: data.title,
-                      message: data.body,
-                      buttons: ['OK']
-                    });
-                    alert.present();
                   }
-                }
-              });
-              break;*/
-            default:
-              console.log(data);
-              break;
-          }
+                  break;
+                default:
+                  console.log(data);
+                  break;
+              }
+            }
+          });
         });
       }
     });
