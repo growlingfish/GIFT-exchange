@@ -178,35 +178,42 @@ export class NewObjectPage {
     // File name only
     var filename = this.lastImage;
   
-    var options = {
-      fileKey: "file",
-      fileName: filename,
-      chunkedMode: false,
-      mimeType: "multipart/form-data"
-    };
+    this.userProvider.getUser().then(data => {
+      this.userProvider.getGIFTToken().then(tokenData => {
+        var options = {
+          fileKey: "file",
+          fileName: filename,
+          chunkedMode: false,
+          mimeType: "multipart/form-data",
+          headers: {
+            Authorization: 'GiftToken ' + btoa(data.ID + ":" + tokenData)
+          }
+        };
 
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    
-    this.loading = this.loadingCtrl.create({
-      content: 'Uploading...',
-      duration: 10000
-    });
-    this.loading.present();
-  
-    // Use the FileTransfer to upload the image
-    fileTransfer.upload(targetPath, url, options).then(data => {
-      this.loading.dismissAll();
-      let response = JSON.parse(data.response);
-      if (response.success) {
-        this.uploadedFilename = response.filename;
-        this.object.post_image = response.url;
-      } else {
-        this.showErrorToast('Error while uploading file');
-      }
-    }, err => {
-      this.loading.dismissAll();
-      console.log(err);
-      this.showErrorToast('Error while uploading file');
+        const fileTransfer: FileTransferObject = this.transfer.create();
+        
+        this.loading = this.loadingCtrl.create({
+          content: 'Uploading...',
+          duration: 10000
+        });
+        this.loading.present();
+      
+        // Use the FileTransfer to upload the image
+        fileTransfer.upload(targetPath, url, options).then(data => {
+          this.loading.dismissAll();
+          let response = JSON.parse(data.response);
+          if (response.success) {
+            this.uploadedFilename = response.filename;
+            this.object.post_image = response.url;
+          } else {
+            this.showErrorToast('Error while uploading file');
+          }
+        }, err => {
+          this.loading.dismissAll();
+          console.log(err);
+          this.showErrorToast('Error while uploading file');
+        });
+      });
     });
   }
   

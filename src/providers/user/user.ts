@@ -312,24 +312,17 @@ export class UserProvider {
           console.log("FCM getToken failed ...");
         });
           
-        /*this.fcm.subscribeToTopic('giftGlobal');
-        console.log("Attempted to subscribe to giftGlobal");
-
-        this.fcm.subscribeToTopic('giftDeliveries');
-        console.log("Attempted to subscribe to giftDeliveries");
-
-        this.fcm.subscribeToTopic('giftStatus');
-        console.log("Attempted to subscribe to giftStatus");
-        
+        this.fcm.subscribeToTopic('giftNotifications');
+        console.log("Attempted to subscribe to giftNotifications");
+         
         this.fcm.onNotification().subscribe(data => {
-          console.log(data);
           if (data.wasTapped) { //Notification was received in notification tray (app is in background)
             
           } else { //Notification was received when app is in foreground
           
           }
           switch (data.topic) {
-            case 'giftGlobal':
+            /*case 'giftNotifications':
               let alert = this.alertCtrl.create({
                 title: data.title,
                 subTitle: data.body,
@@ -441,12 +434,12 @@ export class UserProvider {
                   }
                 }
               });
-              break;
+              break;*/
             default:
               console.log(data);
               break;
           }
-        });*/
+        });
       }
     });
   }

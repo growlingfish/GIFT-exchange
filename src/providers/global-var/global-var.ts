@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 export class GlobalVarProvider {
 
   apiBase: string;
+  notificationBase: string;
 
   constructor(public http: HttpClient) {
     this.apiBase = "https://gifting.digital/wp-json/gift/v3/";
