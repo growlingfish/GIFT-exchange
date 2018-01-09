@@ -24,7 +24,8 @@
 }
 
 ion-content {
-    background: url('../assets/background.jpg');
+    background: url('../assets/imgs/background.jpg');
+    background-position: center;
     background-size: cover;
 }
 
@@ -34,12 +35,12 @@ ion-slide {
 }
 
 .toolbar-background {
-    background: rgb(255, 220, 75);
+    background: map-get($colors, primary);
     border-bottom: 5px solid white;
 }
 
 .swiper-pagination-bullet-active {
-    background: rgb(75, 195, 220) !important;
+    background: map-get($colors, primary) !important;
 }
 
 ion-alert {
@@ -52,7 +53,7 @@ ion-alert {
     background: black;
 
     .tabbar {
-        background: rgb(75, 195, 220);
+        background: map-get($colors, primary);
         border-top: 5px solid white;
 
         .tab-button[aria-selected=true] {

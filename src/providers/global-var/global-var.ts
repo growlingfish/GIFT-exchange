@@ -23,6 +23,10 @@ export class GlobalVarProvider {
     return this.getApiBase() + "new/sender/" + encodeURI(username) + "/" + encodeURI(password) + "/" + encodeURI(email) + "/" + encodeURI(name);
   }
 
+  getFreeGiftURL (venueId) {
+    return this.getApiBase() + "gifts/free/" + venueId;
+  }
+
   getSentGiftsURL (userId) {
     return this.getApiBase() + "gifts/sent/" + userId;
   }

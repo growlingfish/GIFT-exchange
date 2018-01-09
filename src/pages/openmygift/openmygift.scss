@@ -12,7 +12,7 @@ page-openmygift {
             text-align: right;
             font-size: 50px;
             padding-right: 20px;
-            color: rgb(255, 220, 75);
+            color: map-get($colors, primary);
         }
 
     }
@@ -41,11 +41,11 @@ page-openmygift {
         }
 
         .component-1.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-1.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
 
         .component-2 {
@@ -53,11 +53,11 @@ page-openmygift {
         }
 
         .component-2.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-2.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
 
         .component-3 {
@@ -65,11 +65,11 @@ page-openmygift {
         }
 
         .component-3.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-3.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
     }
 
@@ -81,7 +81,7 @@ page-openmygift {
             text-align: right;
             font-size: 50px;
             padding-right: 20px;
-            color: rgb(255, 220, 75);
+            color: map-get($colors, primary);
         }
 
     }

@@ -45,11 +45,11 @@ page-newgift {
         }
 
         .component-1.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-1.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
 
         .component-2 {
@@ -57,11 +57,11 @@ page-newgift {
         }
 
         .component-2.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-2.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
 
         .component-3 {
@@ -69,11 +69,11 @@ page-newgift {
         }
 
         .component-3.complete {
-            background: rgb(255, 220, 75);
+            background: map-get($colors, primary);
         }
 
         .component-3.incomplete {
-            background: rgb(75, 195, 220);
+            background: map-get($colors, secondary);
         }
     }
 

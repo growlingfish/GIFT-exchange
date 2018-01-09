@@ -26,6 +26,11 @@ interface RegisterResponse {
   user: Object;
 }
 
+interface UpdateFreeGiftResponse {
+  success: boolean;
+  gifts: Array<Object>;
+}
+
 interface UpdateTheirGiftsResponse {
   success: boolean;
   gifts: Array<Object>;
@@ -102,6 +107,22 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.set('seenIntro', val));
   }
 
+  public getSeenRoles (): Promise<boolean> {
+    return this.storage.ready().then(() => this.storage.get('seenRoles'));
+  }
+
+  public setSeenRoles (val: boolean) {
+    return this.storage.ready().then(() => this.storage.set('seenRoles', val));
+  }
+
+  public getSeenFreeGift (): Promise<boolean> {
+    return this.storage.ready().then(() => this.storage.get('seenFreeGift'));
+  }
+
+  public setSeenFreeGift (val: boolean) {
+    return this.storage.ready().then(() => this.storage.set('seenFreeGift', val));
+  }
+
   public getUser (): Promise<any> {
     return this.storage.ready().then(() => this.storage.get('user'));
   }
@@ -132,6 +153,14 @@ export class UserProvider {
 
   public setFCMToken (val: string) {
     return this.storage.ready().then(() => this.storage.set('fcmToken', val));
+  }
+
+  public getFreeGift (): Promise<any> {
+    return this.storage.ready().then(() => this.storage.get('freeGift'));
+  }
+
+  public setFreeGift (val: any): Promise<any> {
+    return this.storage.ready().then(() => this.storage.set('freeGift', val));
   }
 
   public getTheirGifts (): Promise<any> {
@@ -321,9 +350,21 @@ export class UserProvider {
         }, error => {
           console.log("FCM getToken failed ...");
         });
-          
-        this.fcm.subscribeToTopic('giftSent');
+        
         console.log("Attempted to subscribe to giftSent");
+        this.fcm.subscribeToTopic('giftSent').then(data => {
+          console.log("Attempted to subscribe to giftUnwrapped");
+          this.fcm.subscribeToTopic('giftUnwrapped').then(data => {
+            console.log("Attempted to subscribe to giftReceived");
+            this.fcm.subscribeToTopic('giftReceived').then(data => {
+              console.log("Attempted to subscribe to responseSent");
+              this.fcm.subscribeToTopic('responseSent').then(data => {
+                console.log("Finished subscriptions");
+              });  
+            });  
+          });  
+        });
+        
          
         this.fcm.onNotification().subscribe(data => {
           this.getUser().then(user => {
@@ -484,7 +525,23 @@ export class UserProvider {
                             if (complete) {
                               console.log("Succeeded getting activity");
                               observer.next(true);
-                              observer.complete();
+                              
+                              this.updateFreeGift().subscribe(complete => {
+                                if (complete) {
+                                  console.log("Succeeded getting free gift");
+                                  observer.next(true);
+                                  observer.complete();
+                                } else {
+                                  console.log("Failed getting free gift ... kicking out");
+                                  observer.next(false);
+                                  observer.complete();
+                                }
+                              },
+                              error => {
+                                console.log("Failed getting free gift");
+                                observer.next(false);
+                                observer.complete();
+                              });
                             } else {
                               console.log("Failed getting activity ... kicking out");
                               observer.next(false);
@@ -550,6 +607,30 @@ export class UserProvider {
         console.log("Failed getting sent gifts");
         observer.next(false);
         observer.complete();
+      });
+    });
+  }
+
+  updateFreeGift (): Observable<any> {
+    return Observable.create(observer => {
+      this.getVenue().then(venue => {
+        this.http.get<UpdateFreeGiftResponse>(this.globalVar.getFreeGiftURL(venue.ID))
+        .subscribe(data => {
+          if (typeof data.success !== 'undefined' && data.success) {
+            if (data.gifts.length > 0) {
+              this.setFreeGift(data.gifts[0]);
+            }
+            observer.next(true);
+            observer.complete();
+          } else {
+            observer.next(false);
+            observer.complete();
+          }
+        },
+        function (error) {
+          observer.next(false);
+          observer.complete();
+        });
       });
     });
   }

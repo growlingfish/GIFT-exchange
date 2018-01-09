@@ -11,7 +11,7 @@ import { UserProvider } from '../../providers/user/user';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-
+  venue: Object;
   username: string; 
   password: string;
   email: string;
@@ -24,8 +24,10 @@ export class RegisterPage {
   ionViewWillEnter () {
     var user = this.userProvider.getUser();
     user.then(data => {
-      if (data == null) {
-        // not already logged in, fine
+      if (data == null) {// not already logged in, fine
+        this.userProvider.getVenue().then(venue => {
+          this.venue = venue;
+        });
       } else {
         this.navCtrl.setRoot(LogoutPage);
       }
@@ -34,25 +36,28 @@ export class RegisterPage {
 
   register () {
     this.showLoading();
-    this.userProvider.logout();
-    this.userProvider.register(this.username, this.password, this.email, this.name).subscribe(success => {
-      if (success) {
-        this.userProvider.getVenue().then(venue => {
-          this.userProvider.login(this.username, this.password, venue.ID).subscribe(success => {
+    if (this.username == this.password) {
+      this.showError("Your username and password must be different");
+      this.password = "";
+    } else {
+      this.userProvider.logout();
+      this.userProvider.register(this.username, this.password, this.email, this.name).subscribe(success => {
+        if (success) {
+          this.userProvider.login(this.username, this.password, this.venue).subscribe(success => {
             if (success) {
               this.navCtrl.setRoot(TabsPage);  
             } else {
               this.showError("Cannot login");
             }
           });
-        });
-      } else {
-        this.showError("User already registered");
-      }
-    },
-    error => {
-      this.showError(error);
-    });
+        } else {
+          this.showError("User already registered");
+        }
+      },
+      error => {
+        this.showError(error);
+      });
+    }
   }
 
   cancel () {

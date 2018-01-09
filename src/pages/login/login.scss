@@ -1,24 +1,38 @@
 page-login {
+
+    h1 {
+        color: white;
+    }
     
-        ion-row {
-            text-align: center;
-        }
-    
-        .outer {
-            width: 80%;
-            padding-top: 30%;
-        }
-    
-        p {
-            color: color($colors, light);
-        }
-    
-        .register {
-            margin-top: 10%;
-        }
-    
-        ion-item, .item {
-            @include alpha-background-color(rgba(white, 0.8), white);
+    ion-row {
+        text-align: center;
+    }
+
+    .logo {
+        text-align: center;
+        width: 100%;
+
+        img {
+            width: 33%;
+            padding: 15% 0 5% 0;
         }
     }
+
+    .outer {
+        width: 80%;
+        padding-top: 10%;
+    }
+
+    p {
+        color: color($colors, light);
+    }
+
+    .register {
+        margin-top: 10%;
+    }
+
+    ion-item, .item {
+        @include alpha-background-color(rgba(white, 0.8), white);
+    }
+}
     

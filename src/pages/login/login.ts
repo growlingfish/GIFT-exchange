@@ -17,7 +17,7 @@ export class LoginPage {
   username: string;
   password: string;
   venues: Array<Object>;
-  venue: any;
+  venue: Object;
   loading: Loading;
   selectOptions = {
     title: 'Which venue are you visiting?',
@@ -25,7 +25,7 @@ export class LoginPage {
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private userProvider: UserProvider, private loadingCtrl: LoadingController) {
-    
+    //this.venue = null;
   }
 
   ionViewWillEnter () {
@@ -100,6 +100,17 @@ export class LoginPage {
   }
 
   register () {
-    this.navCtrl.push(TsAndCsPage);
+    if (!!this.venue) {
+      this.userProvider.setVenue(this.venue).then(data => {
+        this.navCtrl.push(TsAndCsPage);
+      });
+    } else {
+      let alert = this.alertCtrl.create({
+        title: 'Choose a venue',
+        subTitle: 'Please choose a venue before registering.',
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
   }
 }
