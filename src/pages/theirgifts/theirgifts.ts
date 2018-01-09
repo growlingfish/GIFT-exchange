@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { LogoutPage } from '../logout/logout';
 import { NewGiftPage } from '../newgift/newgift';
@@ -17,7 +17,7 @@ export class TheirGiftsPage {
   private unfinished: boolean = false;
   private unfinishedTitle: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone, private alertCtrl: AlertController) {}
 
   ionViewDidEnter () {
     this.userProvider.getTheirGifts().then(data => {
@@ -59,9 +59,46 @@ export class TheirGiftsPage {
   }
 
   review (gift) {
-    this.navCtrl.push(ReviewGiftPage, {
-      gift: gift
-    })
+    this.userProvider.getVenue().then(venue => {
+      var here = false;
+      var intendedVenue = <any>{}; // only one venue per gift?
+      for (var i in gift.wraps) {
+        if (
+          !!gift.wraps[i].unwrap_object && !!gift.wraps[i].unwrap_object.location && !!gift.wraps[i].unwrap_object.location.venue
+        ) {
+          intendedVenue = gift.wraps[i].unwrap_object.location.venue;
+          if (gift.wraps[i].unwrap_object.location.venue.ID == venue.ID) {
+            here = true;
+          }
+          break;
+        }
+      }
+      if (here) {
+        this.navCtrl.push(ReviewGiftPage, {
+          gift: gift
+        });
+      } else {
+        let alert = this.alertCtrl.create({
+          title: 'Made for elsewhere',
+          message: 'You included exhibits at a different venue (' + intendedVenue.name + ') in this gift. Would you like to review it here?',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel'
+            },
+            {
+              text: 'Review',
+              handler: () => {
+                this.navCtrl.push(ReviewGiftPage, {
+                  gift: gift
+                });
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    });
   }
 
   logout () {
