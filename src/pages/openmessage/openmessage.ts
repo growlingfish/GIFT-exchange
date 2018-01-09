@@ -23,7 +23,7 @@ export class OpenMessagePage {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
         this.zone.run(() => {
-          this.nativeAudio.preloadSimple('success', 'assets/ting.mp3');
+          this.nativeAudio.preloadSimple('success', 'assets/audio/ting.mp3');
         });
       }
     });
@@ -56,7 +56,7 @@ export class OpenMessagePage {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
         if (this.platform.is('android')) {
-          this.video = 'file:///android_asset/www/assets/' + this.videos[Math.floor(Math.random() * this.videos.length)];
+          this.video = 'file:///android_asset/www/assets/video/' + this.videos[Math.floor(Math.random() * this.videos.length)];
           this.playVideo();
         }
         this.watch = this.shake.startWatch().subscribe(() => {

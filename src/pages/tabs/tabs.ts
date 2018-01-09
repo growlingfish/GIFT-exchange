@@ -59,7 +59,7 @@ export class TabsPage {
                         let navTransition = alert.dismiss();
                         navTransition.then(() => {
                           this.navCtrl.push(OpenMyGiftPage, {
-                            gift: this.userProvider.getFreeGift()
+                            gift: freeGift
                           });
                         });
                         return false;
