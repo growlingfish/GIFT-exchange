@@ -31,7 +31,6 @@ import { RolePage } from '../pages/role/role';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
-import { VenueIntroPage } from '../pages/venueintro/venueintro';
 import { ViewObjectPage } from '../pages/viewobject/viewobject';
 
 import { Camera } from '@ionic-native/camera';
@@ -78,7 +77,6 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage,
-    VenueIntroPage,
     ViewObjectPage
   ],
   imports: [
@@ -116,7 +114,6 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     TabsPage,
     TheirGiftsPage,
     TsAndCsPage,
-    VenueIntroPage,
     ViewObjectPage
   ],
   providers: [
