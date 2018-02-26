@@ -34,7 +34,7 @@
       <ion-icon [name]="!!this.object.post_title && this.object.post_title.length > 0 ? 'checkmark-circle' : dropdowns[0] ? 'arrow-dropdown' : 'arrow-dropup'"></ion-icon>
     </ion-card-header>
     <ion-card-content *ngIf="dropdowns[0]">
-      <p>What do you call this object?</p>
+      <p>What would you call this object?</p>
       <ion-input autocomplete="true" spellcheck="true" placeholder="Tap here to give it a name" name="title" [(ngModel)]="object.post_title" required></ion-input>
     </ion-card-content>
   </ion-card>
