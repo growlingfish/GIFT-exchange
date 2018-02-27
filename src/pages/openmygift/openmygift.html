@@ -21,7 +21,7 @@
       </ion-col>
       <ion-col col-9>
         <h2>From {{gift.author.nickname}}</h2>
-        <p>Sent at {{gift.post_date}}</p>
+        <p>Sent {{this.formattingProvider.doDate(gift.post_date)}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

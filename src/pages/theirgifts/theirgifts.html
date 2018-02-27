@@ -38,7 +38,7 @@
       <ion-item *ngFor="let gift of gifts" (click)="review(gift)" text-wrap>
         <ion-icon name="arrow-dropright-circle" item-start></ion-icon>
         <h2>A Gift for {{ gift.recipient.nickname }}</h2>
-        <p>Sent at {{ gift.post_date }}</p>
+        <p>Sent {{ this.formattingProvider.doDate(gift.post_date) }}</p>
         <button ion-button clear item-end color="secondary">Review</button>
       </ion-item>
 

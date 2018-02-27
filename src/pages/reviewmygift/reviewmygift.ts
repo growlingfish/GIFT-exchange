@@ -5,6 +5,8 @@ import { LogoutPage } from '../logout/logout';
 import { ReviewObjectPage } from '../reviewobject/reviewobject';
 import { ReviewMessagePage } from '../reviewmessage/reviewmessage';
 
+import { FormattingProvider } from '../../providers/formatting/formatting';
+
 @Component({
   selector: 'page-reviewmygift',
   templateUrl: 'reviewmygift.html',
@@ -13,7 +15,7 @@ export class ReviewMyGiftPage {
 
   gift: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private formattingProvider: FormattingProvider) {
     this.gift = navParams.get('gift');
   }
 

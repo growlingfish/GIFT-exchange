@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { LogoutPage } from '../logout/logout';
 
 import { UserProvider } from '../../providers/user/user';
+import { FormattingProvider } from '../../providers/formatting/formatting';
 
 @Component({
   selector: 'page-activity',
@@ -14,7 +15,7 @@ export class ActivityPage {
   private responses: Array<any>;
   private userID: number;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private formattingProvider: FormattingProvider, private ngZone: NgZone) {
     this.userID = 0;
     this.userProvider.getUser().then(data => {
       this.userID = data.ID;

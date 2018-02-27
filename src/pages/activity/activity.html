@@ -21,7 +21,7 @@
             <img [src]="response.author.gravatar">
           </ion-avatar>
           <h2>Response to {{response.recipient.nickname}}</h2>
-          <p>{{response.post_date}}</p>
+          <p [innerHTML]="this.formattingProvider.doDate(response.post_date)"></p>
         </ion-item>
         <ion-card-content>
           {{response.post_content}}
@@ -33,7 +33,7 @@
               <img [src]="response.author.gravatar">
             </ion-avatar>
             <h2>Response from {{response.author.nickname}}</h2>
-            <p>{{response.post_date}}</p>
+            <p [innerHTML]="this.formattingProvider.doDate(response.post_date)"></p>
           </ion-item>    
           <ion-card-content>
             {{response.post_content}}

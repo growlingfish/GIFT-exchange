@@ -6,6 +6,7 @@ import { ReviewMyGiftPage } from '../reviewmygift/reviewmygift';
 import { OpenMyGiftPage } from '../openmygift/openmygift';
 
 import { UserProvider } from '../../providers/user/user';
+import { FormattingProvider } from '../../providers/formatting/formatting';
 
 @Component({
   selector: 'page-mygifts',
@@ -15,7 +16,7 @@ export class MyGiftsPage {
 
   private gifts: Array<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone, private alertCtrl: AlertController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private formattingProvider: FormattingProvider, private ngZone: NgZone, private alertCtrl: AlertController) {}
 
   ionViewDidEnter () {
     this.userProvider.getMyGifts().then(data => {

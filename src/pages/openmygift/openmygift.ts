@@ -9,6 +9,7 @@ import { OpenMessagePage } from '../openmessage/openmessage';
 import { RespondPage } from '../respond/respond';
 
 import { UserProvider } from '../../providers/user/user';
+import { FormattingProvider } from '../../providers/formatting/formatting';
 
 @Component({
   selector: 'page-openmygift',
@@ -19,7 +20,7 @@ export class OpenMyGiftPage {
   gift: any;
   loading: Loading;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private alertCtrl: AlertController, private userProvider: UserProvider, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private alertCtrl: AlertController, private userProvider: UserProvider, public loadingCtrl: LoadingController, private formattingProvider: FormattingProvider) {
     this.gift = navParams.get('gift');
   }
 

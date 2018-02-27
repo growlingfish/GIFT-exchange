@@ -47,6 +47,7 @@ import { VideoPlayer } from '@ionic-native/video-player';
 
 import { UserProvider } from '../providers/user/user';
 import { GlobalVarProvider } from '../providers/global-var/global-var';
+import { FormattingProvider } from '../providers/formatting/formatting';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { GlobalVarProvider } from '../providers/global-var/global-var';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserProvider,
-    VideoPlayer
+    VideoPlayer,
+    FormattingProvider
   ]
 })
 export class AppModule {}

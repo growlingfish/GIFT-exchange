@@ -6,6 +6,7 @@ import { NewGiftPage } from '../newgift/newgift';
 import { ReviewGiftPage } from '../reviewgift/reviewgift';
 
 import { UserProvider } from '../../providers/user/user'; 
+import { FormattingProvider } from '../../providers/formatting/formatting';
 
 @Component({
   selector: 'page-theirgifts',
@@ -17,7 +18,7 @@ export class TheirGiftsPage {
   private unfinished: boolean = false;
   private unfinishedTitle: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private ngZone: NgZone, private alertCtrl: AlertController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, private formattingProvider: FormattingProvider, private ngZone: NgZone, private alertCtrl: AlertController) {}
 
   ionViewDidEnter () {
     this.userProvider.getTheirGifts().then(data => {
