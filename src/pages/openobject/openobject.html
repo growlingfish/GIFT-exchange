@@ -8,6 +8,10 @@
   
   <ion-content padding>
   
+    <ion-fab right bottom [hidden]="!scrollFAB">
+      <button ion-fab mini><ion-icon name="arrow-down"></ion-icon></button>
+    </ion-fab>
+    
     <ion-card>
       <img [src]="object.post_image"/>
       <ion-card-content>
