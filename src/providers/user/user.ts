@@ -951,7 +951,7 @@ export class UserProvider {
         this.getGIFTToken().then(tokenData => {
           this.http.post<SendResponseResponse>(this.globalVar.getResponseURL(giftId), {
             response: response,
-            sender: data.ID
+            responder: data.ID
           }, {
             headers: new HttpHeaders().set('Authorization', 'GiftToken ' + btoa(data.ID + ":" + tokenData))
           })

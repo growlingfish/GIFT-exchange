@@ -8,7 +8,7 @@
 
 <ion-content>
   <ion-fab top right edge>
-      <button ion-fab color="secondary" (click)="skipIntro()" [disabled]="currentIndex == 3">SKIP</button>
+      <button ion-fab color="secondary" (click)="skipIntro()" [disabled]="currentIndex == 2">SKIP</button>
   </ion-fab>
 
   <ion-slides pager (ionSlideDidChange)="slideChanged()">
@@ -18,7 +18,8 @@
           <ion-row justify-content-center align-items-center>
             <div>
               <h2 class="slide-title">What is the Gift app?</h2>
-              <p>Using this app you can add private digital messages to museum exhibits, and give a sequence of these "personalised exhibits" as gifts to another museum visitor.</p>
+              <p>Using this app you can add private digital messages to museum exhibits, and give a sequence of these "personalised exhibits" as a gift to another museum visitor.</p>
+              <p>Alternatively, you might have downloaded this app because you received an email to let you know that someone else sent you a gift.</p>
             </div>
           </ion-row>
         </ion-grid>
@@ -29,24 +30,10 @@
           <ion-row justify-content-center align-items-center>
             <div>
               <h2 class="slide-title">What is a gift?</h2>
-              <p>We suggest that you include <strong>three personalised exhibits</strong> in each gift:</p>
-              <p><strong>The Start</strong> - the first object that you want to give. Add a message to this exhibit to give the experience a suitable beginning.</p>
-              <p><strong>The Middle</strong> - this is the centre or heart of the gift: the filling in a sandwich. This could add to the story of the previous part, or not.</p>
-              <p><strong>The End</strong> - this is where you conclude the gift: what frame of mind or mood do you want to create with the final part of the gift?</p>
-            </div>
-          </ion-row>
-        </ion-grid>
-      </ion-slide>
-
-      <ion-slide>
-        <ion-grid>
-          <ion-row justify-content-center align-items-center>
-            <div>
-              <h2 class="slide-title">What is a gift?</h2>
-              <p>When you have found exhibits to include in your gift, you need to capture them using the app:</p>
-              <p><strong>A Photo</strong> (of the exhibit, to help the recipient recognise it)</p>
-              <p><strong>Directions</strong> (to find the exhibit, what should the recipient do?)</p>
-              <p><strong>A Location</strong> (which room or area is the exhibit in?)</p>
+              <p>Each gift includes <strong>three personalised exhibits</strong>:</p>
+              <p><strong>The Start</strong> - the first object that the gift recipient must find. The message added to this exhibit should give the experience a suitable beginning.</p>
+              <p><strong>The Middle</strong> - this is the centre or heart of the gift: the filling in a sandwich. The message here might add to the story of the previous part, or not.</p>
+              <p><strong>The End</strong> - this is where the gift is concluded: the message might be designed to leave the recipient in a particular mood or frame of mind.</p>
             </div>
           </ion-row>
         </ion-grid>

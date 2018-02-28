@@ -20,9 +20,8 @@ export class InvitePage {
     this.showLoading();
     this.userProvider.invite(this.email, this.name).subscribe(recipient => {
       if (recipient !== false) {
-        this.userProvider.updateContacts();
         this.userProvider.getUnfinishedGift().then(gift => {
-          gift.recipient = recipient.data;
+          gift.recipient = recipient;
           this.userProvider.setUnfinishedGift(gift).then(data => {
             this.userProvider.updateContacts().subscribe(complete => {
               this.navCtrl.pop();
