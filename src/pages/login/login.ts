@@ -6,6 +6,9 @@ import { TsAndCsPage } from '../tsandcs/tsandcs';
 import { LogoutPage } from '../logout/logout';
 import { KickoutPage } from '../kickout/kickout';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
+import { GlobalVarProvider } from '../../providers/global-var/global-var';
 import { UserProvider } from '../../providers/user/user';
 
 @Component({
@@ -24,7 +27,7 @@ export class LoginPage {
     subTitle: 'Choose the appropriate venue from this list'
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private userProvider: UserProvider, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private globalVarProvider: GlobalVarProvider, private userProvider: UserProvider, private loadingCtrl: LoadingController, private iab: InAppBrowser) {
     //this.venue = null;
   }
 
@@ -112,5 +115,9 @@ export class LoginPage {
       });
       alert.present();
     }
+  }
+
+  resetPassword () {
+    const browser = this.iab.create(this.globalVarProvider.getPasswordResetURL());
   }
 }

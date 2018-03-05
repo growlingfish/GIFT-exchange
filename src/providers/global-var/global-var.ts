@@ -5,14 +5,19 @@ import { Injectable } from '@angular/core';
 export class GlobalVarProvider {
 
   apiBase: string;
-  notificationBase: string;
+  platformBase: string;
 
   constructor(public http: HttpClient) {
-    this.apiBase = "https://gifting.digital/wp-json/gift/v3/";
+    this.platformBase = "https://gifting.digital/";
+    this.apiBase = this.platformBase + "wp-json/gift/v3/";
   }
 
   getApiBase () {
     return this.apiBase;
+  }
+
+  getPasswordResetURL () {
+    return this.platformBase + "wp/wp-login.php?action=lostpassword&fromapp=true";
   }
 
   getAuthURL (username, password) {

@@ -39,6 +39,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { FCM } from '@ionic-native/fcm';
 import { ImageResizer } from '@ionic-native/image-resizer';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { Shake } from '@ionic-native/shake';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -125,6 +126,7 @@ import { FormattingProvider } from '../providers/formatting/formatting';
     FileTransfer, 
     GlobalVarProvider,
     ImageResizer,
+    InAppBrowser,
     NativeAudio,
     Shake,
     StatusBar,
