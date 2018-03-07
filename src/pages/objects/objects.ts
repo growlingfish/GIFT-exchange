@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { NavController, NavParams, ModalController, Platform } from 'ionic-angular';
 
 import { LogoutPage } from '../logout/logout';
 import { ViewObjectPage } from '../viewobject/viewobject';
@@ -17,14 +17,23 @@ export class ObjectsPage {
   private part: number;
   private selected: number = -1;
   private buttonAction: string = "Use";
+  private hasCamera: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider, public modalCtrl: ModalController, private platform: Platform, private zone: NgZone) {
     this.part = navParams.get('part');
     let selected = navParams.get('selected');
     if (selected !== null) {
       this.selected = selected;
       this.buttonAction = "Replace";
     }
+
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
+        this.zone.run(() => {
+          this.hasCamera = true;
+        });
+      }
+    });
   }
 
   ionViewDidEnter () {

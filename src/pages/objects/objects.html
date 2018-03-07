@@ -17,7 +17,7 @@
   <ion-searchbar (ionInput)="filterObjects($event)"></ion-searchbar>
 
   <ion-list>
-    <ion-item (click)="addNew()">
+    <ion-item *ngIf="hasCamera" (click)="addNew()">
       <ion-avatar item-start>
         <img src="http://via.placeholder.com/32x32">
       </ion-avatar>

@@ -1,90 +1,86 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+export const MESSAGE_TYPE_UNDECIDED = -1;
+export const MESSAGE_TYPE_TEXT = 0;
+export const MESSAGE_TYPE_AUDIO = 1;
+export const BASE_PLATFORM = "https://gifting.digital/";
+export const BASE_API = BASE_PLATFORM + "wp-json/gift/v3/";
+
 @Injectable()
 export class GlobalVarProvider {
 
-  apiBase: string;
-  platformBase: string;
-
-  constructor(public http: HttpClient) {
-    this.platformBase = "https://gifting.digital/";
-    this.apiBase = this.platformBase + "wp-json/gift/v3/";
-  }
-
-  getApiBase () {
-    return this.apiBase;
-  }
+  constructor(public http: HttpClient) {}
 
   getPasswordResetURL () {
-    return this.platformBase + "wp/wp-login.php?action=lostpassword&fromapp=true";
+    return BASE_PLATFORM + "wp/wp-login.php?action=lostpassword&fromapp=true";
   }
 
   getAuthURL (username, password) {
-    return this.getApiBase() + "auth/" + encodeURI(username) + "/" + encodeURI(password);
+    return BASE_API + "auth/" + encodeURI(username) + "/" + encodeURI(password);
   }
 
   getRegisterURL (username, password, email, name) {
-    return this.getApiBase() + "new/sender/" + encodeURI(username) + "/" + encodeURI(password) + "/" + encodeURI(email) + "/" + encodeURI(name);
+    return BASE_API + "new/sender/" + encodeURI(username) + "/" + encodeURI(password) + "/" + encodeURI(email) + "/" + encodeURI(name);
   }
 
   getFreeGiftURL (venueId) {
-    return this.getApiBase() + "gifts/free/" + venueId;
+    return BASE_API + "gifts/free/" + venueId;
   }
 
   getSentGiftsURL (userId) {
-    return this.getApiBase() + "gifts/sent/" + userId;
+    return BASE_API + "gifts/sent/" + userId;
   }
 
   getReceivedGiftsURL (userId) {
-    return this.getApiBase() + "gifts/received/" + userId;
+    return BASE_API + "gifts/received/" + userId;
   }
 
   getContactsURL (userId) {
-    return this.getApiBase() + "contacts/" + userId;
+    return BASE_API + "contacts/" + userId;
   }
 
   getInviteURL (userId, email, name) {
-    return this.getApiBase() + "new/receiver/" + encodeURI(email) + "/" + encodeURI(name) + "/" + userId;
+    return BASE_API + "new/receiver/" + encodeURI(email) + "/" + encodeURI(name) + "/" + userId;
   }
 
   getObjectsURL (venueId, userId) {
-    return this.getApiBase() + "objects/" + venueId + "/" + userId;
+    return BASE_API + "objects/" + venueId + "/" + userId;
   }
 
   getObjectPhotoUploadURL () {
-    return this.getApiBase() + "upload/object/";
+    return BASE_API + "upload/object/";
   }
 
   getFinaliseObjectURL (userId) {
-    return this.getApiBase() + "new/object/" + userId;
+    return BASE_API + "new/object/" + userId;
   }
 
   getVenuesURL () {
-    return this.getApiBase() + "venues/";
+    return BASE_API + "venues/";
   }
 
   getLocationsURL (venueId) {
-    return this.getApiBase() + "locations/" + venueId;
+    return BASE_API + "locations/" + venueId;
   }
 
   getActivityURL (userId) {
-    return this.getApiBase() + "responses/" + userId;
+    return BASE_API + "responses/" + userId;
   }
 
   getFinaliseGiftURL (userId) {
-    return this.getApiBase() + "new/gift/" + userId;
+    return BASE_API + "new/gift/" + userId;
   }
 
   getUnwrappedURL (giftId, receiverId) {
-    return this.getApiBase() + "unwrapped/gift/" + giftId + "/" + receiverId;
+    return BASE_API + "unwrapped/gift/" + giftId + "/" + receiverId;
   }
 
   getReceivedURL (giftId, receiverId) {
-    return this.getApiBase() + "received/gift/" + giftId + "/" + receiverId;
+    return BASE_API + "received/gift/" + giftId + "/" + receiverId;
   }
 
   getResponseURL (giftId) {
-    return this.getApiBase() + "respond/gift/" + giftId;
+    return BASE_API + "respond/gift/" + giftId;
   }
 }

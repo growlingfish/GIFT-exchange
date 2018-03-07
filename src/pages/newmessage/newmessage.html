@@ -21,7 +21,14 @@
         <p>What would you like to tell the recipient about this object?</p>
         <p>Why did you choose it for them?</p>
       
-        <ion-textarea autocomplete="true" spellcheck="true" placeholder="Your message" name="message" [(ngModel)]="message" required></ion-textarea>
+        <button ion-button *ngIf="isUndecided()" (click)="setText()">Let me type</button>
+        <button ion-button *ngIf="isUndecided()" (click)="setAudio()">Let me speak</button>
+
+        <button ion-button (click)="stopRecord()" *ngIf="isAudio() && recording"><ion-icon name="mic-off"></ion-icon>&nbsp;&nbsp;Stop Record</button>
+        <button ion-button (click)="startRecord()" *ngIf="isAudio() && !recording"><ion-icon name="mic"></ion-icon>&nbsp;&nbsp;{{!hasRecorded() ? 'Start Record' : 'Re-record'}}</button>
+        <button ion-button (click)="playAudio()" *ngIf="isAudio() && hasRecorded()"><ion-icon name="play"></ion-icon>&nbsp;&nbsp;Replay Message</button>
+
+        <ion-textarea *ngIf="isText()" autocomplete="true" spellcheck="true" placeholder="Your message" name="message" [(ngModel)]="message" required></ion-textarea>
       
         <div class="buttons">
           <button ion-button block (click)="addMessage()" [disabled]="message.length == 0">{{buttonAction}}</button>
