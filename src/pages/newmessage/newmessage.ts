@@ -147,7 +147,7 @@ export class NewMessagePage {
   }
 
   hasRecorded () {
-    return !!this.audio && this.audio.getDuration() > 0;
+    return !!this.fileName && this.fileName.length > 0;
   }
 
   isUndecided () {
