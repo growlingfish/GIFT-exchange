@@ -53,7 +53,6 @@ export class NewMessagePage {
       this.stopRecord();
     }
     if (this.hasRecorded()) {
-      this.uploadRecord();
       this.removeRecord();
     }
   }
