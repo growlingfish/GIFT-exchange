@@ -35,13 +35,6 @@ export class NewMessagePage {
         this.zone.run(() => {
           this.type = Constants.MESSAGE_TYPE_TEXT;
         });
-      } else {
-        this.fileName = 'message' + this.part + '.3gp';
-        if (this.platform.is('ios')) {
-          this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-        } else if (this.platform.is('android')) {
-          this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-        }
       }
     });
   }
@@ -66,6 +59,12 @@ export class NewMessagePage {
   }
 
   startRecord() {
+    this.fileName = 'message' + this.part + '.3gp';
+    if (this.platform.is('ios')) {
+      this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
+    } else if (this.platform.is('android')) {
+      this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
+    }
     this.audio = this.media.create(this.filePath);
     this.audio.startRecord();
     this.recording = true;
