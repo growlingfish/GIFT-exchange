@@ -52,6 +52,10 @@ export class GlobalVarProvider {
     return BASE_API + "upload/object/";
   }
 
+  getMessageAudioUploadURL () {
+    return BASE_API + "upload/audio/";
+  }
+
   getFinaliseObjectURL (userId) {
     return BASE_API + "new/object/" + userId;
   }
