@@ -26,12 +26,12 @@
 
         <button ion-button (click)="stopRecord()" *ngIf="isAudio() && recording"><ion-icon name="mic-off"></ion-icon>&nbsp;&nbsp;Stop Record</button>
         <button ion-button (click)="startRecord()" *ngIf="isAudio() && !recording"><ion-icon name="mic"></ion-icon>&nbsp;&nbsp;{{!hasRecorded() ? 'Start Record' : 'Re-record'}}</button>
-        <button ion-button (click)="playAudio()" *ngIf="isAudio() && !recording && hasRecorded()"><ion-icon name="play"></ion-icon>&nbsp;&nbsp;Replay Message</button>
+        <button ion-button color="light" (click)="playAudio()" *ngIf="isAudio() && !recording && hasRecorded()">Replay Message</button>
 
         <ion-textarea *ngIf="isText()" autocomplete="true" spellcheck="true" placeholder="Your message" name="message" [(ngModel)]="message" required></ion-textarea>
       
         <div class="buttons">
-          <button ion-button block (click)="addMessage()" [disabled]="message.length == 0">{{buttonAction}}</button>
+          <button ion-button block (click)="finishMessage()" [disabled]="!canUpload()">{{buttonAction}}</button>
           <button ion-button color="danger" (click)="cancel()">Cancel</button>
         </div>
       </div>
