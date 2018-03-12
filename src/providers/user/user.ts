@@ -102,23 +102,25 @@ export class UserProvider {
   }
 
   public monitorConnection () {
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      let alert = this.alertController.create({
-        title: 'Connection lost',
-        subTitle: "You do not have a connection to the internet. Without an internet connection, you cannot log in to the Gift app, or make, send or receive gifts. Please connect to a wifi hotspot, or enable your mobile data connection.",
-        buttons: ['OK']
-      });
-      alert.present();
-    });
-    let connectSubscription = this.network.onConnect().subscribe(() => {
-      setTimeout(() => {
+    this.platform.ready().then(() => {
+      this.network.onDisconnect().subscribe(data => {
         let alert = this.alertController.create({
-          title: 'Connected',
-          subTitle: "You have connected to the internet. Now you will be able to log in to the Gift app, and make, send or receive gifts.",
+          title: 'Connection lost',
+          subTitle: "You do not have a connection to the internet. Without an internet connection, you cannot log in to the Gift app, or make, send or receive gifts. Please connect to a wifi hotspot, or enable your mobile data connection.",
           buttons: ['OK']
         });
         alert.present();
-      }, 3000);
+      }, error => console.error(error));
+      this.network.onConnect().subscribe(data => {
+        setTimeout(() => {
+          let alert = this.alertController.create({
+            title: 'Connected',
+            subTitle: "You have connected to the internet. Now you will be able to log in to the Gift app, and make, send or receive gifts.",
+            buttons: ['OK']
+          });
+          alert.present();
+        }, 3000);
+      }, error => console.error(error));
     });
   }
 

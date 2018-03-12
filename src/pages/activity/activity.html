@@ -18,9 +18,9 @@
       <ion-card *ngIf="response.author.ID == userID" class="sent">
         <ion-item>
           <ion-avatar item-start>
-            <img [src]="response.author.gravatar">
+            <img [src]="response.recipient.gravatar">
           </ion-avatar>
-          <h2>Response to {{response.recipient.nickname}}</h2>
+          <h2>Sent to {{response.recipient.nickname}}</h2>
           <p [innerHTML]="this.formattingProvider.doDate(response.post_date)"></p>
         </ion-item>
         <ion-card-content>

@@ -25,9 +25,19 @@
       <button ion-button clear item-end color="secondary">Create</button>
     </ion-item>
 
-    <ion-item-divider color="light">Already Registered recipients</ion-item-divider>
+    <ion-item-divider *ngIf="registeredToday() && registeredToday().length > 0" color="light">Users registered today</ion-item-divider>
 
-    <ion-item *ngFor="let contact of contacts" (click)="invite(contact)">
+    <ion-item *ngFor="let contact of registeredToday()" (click)="invite(contact)">
+      <ion-avatar item-start>
+        <img [src]="contact.gravatar">
+      </ion-avatar>
+      {{contact.nickname}}
+      <button ion-button clear item-end color="secondary">Add</button>
+    </ion-item>
+
+    <ion-item-divider *ngIf="registeredBefore() && registeredBefore().length > 0" color="light">Registered before today</ion-item-divider>
+
+    <ion-item *ngFor="let contact of registeredBefore()" (click)="invite(contact)">
       <ion-avatar item-start>
         <img [src]="contact.gravatar">
       </ion-avatar>

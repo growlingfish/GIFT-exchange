@@ -6,6 +6,8 @@ import { InvitePage } from '../invite/invite';
 
 import { UserProvider } from '../../providers/user/user';
 
+import moment from 'moment';
+
 @Component({
   selector: 'page-contacts',
   templateUrl: 'contacts.html',
@@ -35,6 +37,32 @@ export class ContactsPage {
         })
       }
     });
+  }
+
+  registeredToday () {
+    if (!!this.contacts) {
+      return this.contacts.filter((contact) => {
+        if (moment(contact.registered).isBefore(moment(), 'day')) {
+          return false;
+        }
+        return true; 
+      });
+    } else {
+      return false;
+    }
+  }
+
+  registeredBefore () {
+    if (!!this.contacts) {
+      return this.contacts.filter((contact) => {
+        if (moment(contact.registered).isBefore(moment(), 'day')) {
+          return true;
+        }
+        return false; 
+      });
+    } else {
+      return false;
+    }
   }
 
   inviteNew () {
