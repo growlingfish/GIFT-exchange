@@ -3,11 +3,10 @@ import { NavController, NavParams, ViewController, Platform } from 'ionic-angula
 
 import * as Constants from '../../providers/global-var/global-var';
 
-import { Media, MediaObject } from '@ionic-native/media';
-import { File } from '@ionic-native/file';
 import { Shake } from '@ionic-native/shake';
 import { VideoPlayer } from '@ionic-native/video-player';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Media, MediaObject } from '@ionic-native/media';
 
 @Component({
   selector: 'page-openmessage',
@@ -17,14 +16,12 @@ export class OpenMessagePage {
 
   private message: string;
   private type: number = Constants.MESSAGE_TYPE_UNDECIDED;
-  private audio: MediaObject;
-  private filePath: string;
-  private fileName: string;
   private revealed: boolean;
   private watch;
   private video: string;
+  private audio: MediaObject;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private platform: Platform, private shake: Shake, private zone: NgZone, private videoPlayer: VideoPlayer, private nativeAudio: NativeAudio, private media: Media, private file: File) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private platform: Platform, private shake: Shake, private zone: NgZone, private videoPlayer: VideoPlayer, private nativeAudio: NativeAudio, private media: Media) {
     this.message = navParams.get('message');
     this.revealed = false;
 
@@ -34,16 +31,10 @@ export class OpenMessagePage {
           this.nativeAudio.preloadSimple('success', 'assets/audio/ting.mp3');
         });
 
-        if (this.message.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
+        if (this.message.replace(/(<([^>]+)>)|(&lt;([^>]+)&gt;)/g, '').trim().match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
           var matches = this.message.match(/\/([^\/?#]+)[^\/]*$/);
           if (matches.length > 1) {
-            this.fileName = matches[1];
-            if (this.platform.is('ios')) {
-              this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-            } else if (this.platform.is('android')) {
-              this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-            }
-            this.audio = this.media.create(this.filePath);
+            this.message = this.message.replace(/(<([^>]+)>)|(&lt;([^>]+)&gt;)/g, '').trim();
             this.setAudio();
           } else {
             this.setText();
@@ -103,14 +94,13 @@ export class OpenMessagePage {
   }
 
   back () {
+    if (this.isAudio() && !!this.audio) {
+      this.audio.stop();
+      this.audio.release();
+    }
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
         this.watch.unsubscribe();
-
-        if (this.isAudio() && !!this.audio) {
-          this.audio.stop();
-          this.audio.release();
-        }
       }
     });
     this.viewCtrl.dismiss();
@@ -133,9 +123,11 @@ export class OpenMessagePage {
   }
 
   playAudio() {
-    this.audio = this.media.create(this.filePath);
-    this.audio.play();
-    this.audio.setVolume(1);
+    this.zone.run(() => {
+      this.audio = this.media.create(this.message);
+      this.audio.play();
+      this.audio.setVolume(1);
+    });
   }
 
 }

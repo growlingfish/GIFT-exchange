@@ -4,7 +4,6 @@ import { NavController, NavParams, ViewController, Platform } from 'ionic-angula
 import * as Constants from '../../providers/global-var/global-var';
 
 import { Media, MediaObject } from '@ionic-native/media';
-import { File } from '@ionic-native/file';
 
 @Component({
   selector: 'page-reviewmessage',
@@ -15,10 +14,8 @@ export class ReviewMessagePage {
   private message: string;
   private type: number = Constants.MESSAGE_TYPE_UNDECIDED;
   private audio: MediaObject;
-  private filePath: string;
-  private fileName: string;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public platform: Platform, private zone: NgZone, private media: Media, private file: File) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public platform: Platform, private zone: NgZone, private media: Media) {
     this.message = navParams.get('message');
 
     this.platform.ready().then(() => {
@@ -27,16 +24,10 @@ export class ReviewMessagePage {
           this.setText();
         });
       } else {
-        if (this.message.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
+        if (this.message.replace(/(<([^>]+)>)|(&lt;([^>]+)&gt;)/g, '').trim().match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
           var matches = this.message.match(/\/([^\/?#]+)[^\/]*$/);
           if (matches.length > 1) {
-            this.fileName = matches[1];
-            if (this.platform.is('ios')) {
-              this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-            } else if (this.platform.is('android')) {
-              this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-            }
-            this.audio = this.media.create(this.filePath);
+            this.message = this.message.replace(/(<([^>]+)>)|(&lt;([^>]+)&gt;)/g, '').trim();
             this.setAudio();
           } else {
             this.setText();
@@ -65,9 +56,11 @@ export class ReviewMessagePage {
   }
 
   playAudio() {
-    this.audio = this.media.create(this.filePath);
-    this.audio.play();
-    this.audio.setVolume(1);
+    this.zone.run(() => {
+      this.audio = this.media.create(this.message);
+      this.audio.play();
+      this.audio.setVolume(1);
+    });
   }
 
   dismiss () {
@@ -75,7 +68,6 @@ export class ReviewMessagePage {
       this.audio.stop();
       this.audio.release();
     }
-
     this.viewCtrl.dismiss();
   }
 

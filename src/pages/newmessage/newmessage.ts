@@ -65,20 +65,14 @@ export class NewMessagePage {
     if (!!this.audio && this.recording) {
       this.stopRecord();
     }
-    if (this.hasRecorded()) {
-      this.removeRecord();
-    }
   }
 
   startRecord() {
     this.userProvider.getUser().then(data => {
-      var randomString = function() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for(var i = 0; i < 10; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
+      var randomString = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for (var i = 0; i < 10; i++) {
+        randomString += possible.charAt(Math.floor(Math.random() * possible.length));
       }
       this.fileName = 'audiomessage-p' + this.part + '-' + data.ID + '-' + randomString + '.3gp';
       if (this.platform.is('ios')) {
@@ -151,16 +145,6 @@ export class NewMessagePage {
       position: 'top'
     });
     toast.present();
-  }
-
-  removeRecord () {
-    if (this.platform.is('ios')) {
-      this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
-      this.file.removeFile(this.filePath, this.fileName);
-    } else if (this.platform.is('android')) {
-      this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-      this.file.removeFile(this.filePath, this.fileName);
-    }
   }
 
   playAudio() {

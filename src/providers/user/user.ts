@@ -5,9 +5,10 @@ import { Observable } from 'rxjs/Observable';
 
 import { App, Platform, AlertController, LoadingController, Loading } from 'ionic-angular';
 
-import { Storage } from '@ionic/storage';
+import { File } from '@ionic-native/file';
 import { FCM } from '@ionic-native/fcm';
 import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
 
 import { TabsPage } from '../../pages/tabs/tabs';
 import { LogoutPage } from '../../pages/logout/logout';
@@ -97,7 +98,7 @@ interface SendResponseResponse {
 export class UserProvider {
   loading: Loading;
 
-  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network) {
+  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network, private file: File) {
     this.monitorConnection();
   }
 
@@ -252,7 +253,28 @@ export class UserProvider {
     return this.storage.ready().then(() => this.storage.set('unfinishedGift', val));
   }
 
+  public clearGiftMedia () {
+    this.getUnfinishedGift().then(gift => {
+      if (gift !== null && !!gift.payloads) {
+        for (var i = 0; i < gift.payloads.length; i++) {
+          if (gift.payloads[i].post_content.length > 0 && gift.payloads[i].post_content.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
+            var matches = gift.payloads[i].post_content.match(/\/([^\/?#]+)[^\/]*$/);
+            alert(matches[1]);
+            if (matches.length > 1) {
+              if (this.platform.is('ios')) {
+                this.file.removeFile(this.file.documentsDirectory, matches[1]);
+              } else if (this.platform.is('android')) {
+                this.file.removeFile(this.file.externalDataDirectory, matches[1]);
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
   public clearUnfinishedGift (): Promise<any> {
+    this.clearGiftMedia();
     return this.storage.ready().then(() => this.storage.remove('unfinishedGift'));
   }
 
@@ -899,6 +921,7 @@ export class UserProvider {
             })
             .subscribe(data => {
               if (typeof data.success !== 'undefined' && data.success) {
+                this.clearGiftMedia();
                 observer.next(true);
                 observer.complete();
               } else {

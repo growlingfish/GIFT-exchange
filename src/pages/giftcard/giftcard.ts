@@ -12,6 +12,7 @@ import { UserProvider } from '../../providers/user/user';
 export class GiftcardPage {
 
   private message: string = "";
+  private recipient: string = "friend";
   private buttonAction: string = "Add message";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userProvider: UserProvider) {
@@ -19,6 +20,9 @@ export class GiftcardPage {
 
   ionViewDidEnter () {
     this.userProvider.getUnfinishedGift().then(gift => {
+      if (!!gift.recipient && !!gift.recipient.nickname) {
+        this.recipient = gift.recipient.nickname;
+      }
       if (gift.giftcards[0].post_content.length > 0) {
         this.message = gift.giftcards[0].post_content;
         this.buttonAction = "Update message";

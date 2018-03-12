@@ -14,8 +14,8 @@
           <ion-card *ngIf="isText()">
             <ion-card-content [innerHTML]="this.message"></ion-card-content>
           </ion-card>
-          <button ion-button color="light" (click)="playAudio()" *ngIf="isAudio()"><ion-icon name="play"></ion-icon>&nbsp;&nbsp;Play Message</button>
           <div class="buttons">
+            <button ion-button color="light" (click)="playAudio()" *ngIf="isAudio()"><ion-icon name="play"></ion-icon>&nbsp;&nbsp;Play Message</button>
             <button ion-button block (click)="dismiss()">Back</button>
           </div>
         </div>

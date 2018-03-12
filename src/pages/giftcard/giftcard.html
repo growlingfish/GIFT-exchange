@@ -18,9 +18,9 @@
     <ion-row justify-content-center align-items-center>
       <div class="outer">
 
-        <p>This is a personal message for your recipient that you would usually write in say a greetings card to go with a gift.</p>
+        <p>This message will introduce the gift to the recipient. Sometimes it is better to come back and write this when you have filled the other parts of the gift.</p>
       
-        <ion-textarea autocomplete="true" spellcheck="true" placeholder="Hi Sally I've made a little something for you, I hope you like it treasure x" name="message" [(ngModel)]="message" required></ion-textarea>
+        <ion-textarea autocomplete="true" spellcheck="true" placeholder="Hi {{recipient}}. I've made this gift for you because ..." name="message" [(ngModel)]="message" required></ion-textarea>
         <div class="buttons">
           <button ion-button block (click)="addMessage()" [disabled]="message.length == 0">{{buttonAction}}</button>
           <button ion-button color="danger" (click)="cancel()">Cancel</button>
