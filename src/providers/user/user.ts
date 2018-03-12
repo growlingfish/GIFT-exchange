@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { App, Platform, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
-
 import { FCM } from '@ionic-native/fcm';
+import { Network } from '@ionic-native/network';
 
 import { TabsPage } from '../../pages/tabs/tabs';
 import { LogoutPage } from '../../pages/logout/logout';
@@ -97,7 +97,30 @@ interface SendResponseResponse {
 export class UserProvider {
   loading: Loading;
 
-  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController) {}
+  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network) {
+    this.monitorConnection();
+  }
+
+  public monitorConnection () {
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      let alert = this.alertController.create({
+        title: 'Connection lost',
+        subTitle: "You do not have a connection to the internet. Without an internet connection, you cannot log in to the Gift app, or make, send or receive gifts. Please connect to a wifi hotspot, or enable your mobile data connection.",
+        buttons: ['OK']
+      });
+      alert.present();
+    });
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      setTimeout(() => {
+        let alert = this.alertController.create({
+          title: 'Connected',
+          subTitle: "You have connected to the internet. Now you will be able to log in to the Gift app, and make, send or receive gifts.",
+          buttons: ['OK']
+        });
+        alert.present();
+      }, 3000);
+    });
+  }
 
   public getSeenIntro (): Promise<boolean> {
     return this.storage.ready().then(() => this.storage.get('seenIntro'));

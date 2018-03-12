@@ -71,6 +71,11 @@ export class ReviewMessagePage {
   }
 
   dismiss () {
+    if (this.isAudio() && !!this.audio) {
+      this.audio.stop();
+      this.audio.release();
+    }
+
     this.viewCtrl.dismiss();
   }
 

@@ -17,11 +17,6 @@ export class MyApp {
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, userProvider: UserProvider) {
     platform.ready().then(() => {
       this.rootPage = IntroPage;
-      userProvider.getSeenIntro().then(hasSeen => {
-        if (hasSeen) {
-          this.rootPage = LoginPage;
-        }
-      });
       statusBar.styleDefault();
       setTimeout(function () {
         splashScreen.hide();

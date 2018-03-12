@@ -42,6 +42,7 @@ import { ImageResizer } from '@ionic-native/image-resizer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Media } from '@ionic-native/media';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { Network } from '@ionic-native/network';
 import { Shake } from '@ionic-native/shake';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -130,6 +131,7 @@ import { FormattingProvider } from '../providers/formatting/formatting';
     InAppBrowser,
     Media,
     NativeAudio,
+    Network,
     Shake,
     StatusBar,
     SplashScreen,

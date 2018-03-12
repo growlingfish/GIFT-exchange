@@ -118,6 +118,6 @@ export class LoginPage {
   }
 
   resetPassword () {
-    const browser = this.iab.create(this.globalVarProvider.getPasswordResetURL());
+    this.iab.create(this.globalVarProvider.getPasswordResetURL());
   }
 }

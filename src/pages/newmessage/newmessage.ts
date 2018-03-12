@@ -94,6 +94,7 @@ export class NewMessagePage {
 
   stopRecord() {
     this.audio.stopRecord();
+    this.audio.release();
     this.recording = false;
   }
 
