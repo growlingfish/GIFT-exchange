@@ -259,7 +259,6 @@ export class UserProvider {
         for (var i = 0; i < gift.payloads.length; i++) {
           if (gift.payloads[i].post_content.length > 0 && gift.payloads[i].post_content.match(/\.([0-9a-z]+)(?:[\?#]|$)/i)) { // was this an audio message?
             var matches = gift.payloads[i].post_content.match(/\/([^\/?#]+)[^\/]*$/);
-            alert(matches[1]);
             if (matches.length > 1) {
               if (this.platform.is('ios')) {
                 this.file.removeFile(this.file.documentsDirectory, matches[1]);
