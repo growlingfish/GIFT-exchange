@@ -29,11 +29,16 @@ export class RespondPage {
     this.loading.present();
     this.userProvider.sendResponse(this.giftID, this.message, this.owner).subscribe(complete => {
       if (complete) {
-        this.navCtrl.setRoot(TabsPage);
+        this.userProvider.updateActivity().subscribe(done => {
+          this.navCtrl.setRoot(TabsPage, {
+            tab: 2
+          });
+          this.loading.dismissAll();
+        });
       } else {
+        this.loading.dismissAll();
         this.showError();
       }
-      this.loading.dismissAll();
     },
     error => {        
       this.loading.dismissAll();

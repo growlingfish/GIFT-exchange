@@ -423,6 +423,7 @@ export class UserProvider {
               } else { //Notification was received when app is in foreground
               
               }*/
+              //alert(JSON.stringify(data));
               switch (data.topic) {
                 case 'giftSent':
                   if (user.ID == data.recipientID) {
@@ -1015,9 +1016,6 @@ export class UserProvider {
           function (error) {
             observer.next(false);
             observer.complete();
-          },
-          () => {
-            this.updateActivity();
           });
         });
       });

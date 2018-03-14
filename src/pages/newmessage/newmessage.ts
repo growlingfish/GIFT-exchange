@@ -32,9 +32,7 @@ export class NewMessagePage {
 
     this.platform.ready().then(() => {
       if (!this.platform.is('cordova')) {
-        this.zone.run(() => {
-          this.setText();
-        });
+        this.setText();
       }
     });
   }
@@ -166,7 +164,9 @@ export class NewMessagePage {
   }
 
   setText () {
-    this.type = Constants.MESSAGE_TYPE_TEXT;
+    this.zone.run(() => {
+      this.type = Constants.MESSAGE_TYPE_TEXT;
+    });
   }
 
   isAudio () {
@@ -174,7 +174,9 @@ export class NewMessagePage {
   }
 
   setAudio () {
-    this.type = Constants.MESSAGE_TYPE_AUDIO;
+    this.zone.run(() => {
+      this.type = Constants.MESSAGE_TYPE_AUDIO;
+    });
   }
 
   canUpload () {
