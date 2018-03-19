@@ -42,7 +42,9 @@ export class ContactsPage {
   registeredToday () {
     if (!!this.contacts) {
       return this.contacts.filter((contact) => {
-        if (moment(contact.registered).isBefore(moment(), 'day')) {
+        if (contact.user_email == 'michelle.coleman@nottingham.ac.uk') { // for Michelle's trial
+          return true;
+        } else if (moment(contact.registered).isBefore(moment(), 'day')) {
           return false;
         }
         return true; 
@@ -55,7 +57,9 @@ export class ContactsPage {
   registeredBefore () {
     if (!!this.contacts) {
       return this.contacts.filter((contact) => {
-        if (moment(contact.registered).isBefore(moment(), 'day')) {
+        if (contact.user_email == 'michelle.coleman@nottingham.ac.uk') { // for Michelle's trial
+          return false;
+        } else if (moment(contact.registered).isBefore(moment(), 'day')) {
           return true;
         }
         return false; 

@@ -314,6 +314,32 @@ export class NewGiftPage {
     }
   }
 
+  editPart (part) {
+    if (!this.objectComplete(part)) {
+      this.editObject(part);
+    } else {
+      if (!this.payloadComplete(part)) {
+        this.editMessage(part);
+      } else {
+        if (!this.isComplete()) {
+          let alert = this.alertCtrl.create({
+            title: "This part is complete",
+            subTitle: "You've added an object and a message to this part, but you haven't finished the rest of the Gift",
+            buttons: ['OK']
+          });
+          alert.present();
+        } else {
+          let alert = this.alertCtrl.create({
+            title: "The Gift is complete",
+            subTitle: "You've filled all parts of the Gift. If you're happy with it, scroll down and tap Send Gift",
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      }
+    }
+  }
+
   editObject (part) {
     this.navCtrl.push(ObjectsPage, {
       part: part,

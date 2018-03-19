@@ -97,6 +97,9 @@ interface SendResponseResponse {
 @Injectable()
 export class UserProvider {
   loading: Loading;
+  shownConnected: boolean = false;
+  shownDisconnected: boolean = false;
+  paused: boolean = false;
 
   constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network, private file: File) {
     this.monitorConnection();
@@ -104,24 +107,38 @@ export class UserProvider {
 
   public monitorConnection () {
     this.platform.ready().then(() => {
-      this.network.onDisconnect().subscribe(data => {
-        let alert = this.alertController.create({
-          title: 'Connection lost',
-          subTitle: "You do not have a connection to the internet. Without an internet connection, you cannot log in to the Gift app, or make, send or receive gifts. Please connect to a wifi hotspot, or enable your mobile data connection.",
-          buttons: ['OK']
+      if (this.platform.is('cordova')){
+        this.platform.pause.subscribe(() => {
+          this.paused = true;
         });
-        alert.present();
-      }, error => console.error(error));
-      this.network.onConnect().subscribe(data => {
-        setTimeout(() => {
-          let alert = this.alertController.create({
-            title: 'Connected',
-            subTitle: "You have connected to the internet. Now you will be able to log in to the Gift app, and make, send or receive gifts.",
-            buttons: ['OK']
-          });
-          alert.present();
-        }, 3000);
-      }, error => console.error(error));
+        this.platform.resume.subscribe(() => {
+          this.paused = false; 
+        });
+
+        this.network.onDisconnect().subscribe(data => {
+          if (!this.paused && !this.shownDisconnected) {
+            this.shownDisconnected = true;
+            let alert = this.alertController.create({
+              title: 'Connection lost',
+              subTitle: "You do not have a connection to the internet. Without an internet connection, you cannot log in to the Gift app, or make, send or receive gifts. Please connect to a wifi hotspot, or enable your mobile data connection.",
+              buttons: ['OK']
+            });
+            alert.present();
+          }
+        }, error => console.error(error));
+        this.network.onConnect().subscribe(data => {
+          if (!this.paused && !this.shownConnected) {
+            setTimeout(() => {
+              let alert = this.alertController.create({
+                title: 'Connected',
+                subTitle: "You have connected to the internet. Now you will be able to log in to the Gift app, and make, send or receive gifts.",
+                buttons: ['OK']
+              });
+              alert.present();
+            }, 3000);
+          }
+        }, error => console.error(error));
+      }
     });
   }
 

@@ -39,6 +39,7 @@ export class LoginPage {
           if (complete) {
             this.userProvider.getVenues().then(venues => {
               this.venues = venues;
+              this.venues.reverse();
               this.loading.dismiss();
             });
           } else {
