@@ -33,6 +33,7 @@ import { TheirGiftsPage } from '../pages/theirgifts/theirgifts';
 import { TsAndCsPage } from '../pages/tsandcs/tsandcs';
 import { ViewObjectPage } from '../pages/viewobject/viewobject';
 
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
@@ -121,6 +122,7 @@ import { FormattingProvider } from '../providers/formatting/formatting';
     ViewObjectPage
   ],
   providers: [
+    BackgroundMode,
     Camera,
     FCM,
     File,

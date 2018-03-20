@@ -20,6 +20,7 @@
         "@angular/http": "5.0.0",
         "@angular/platform-browser": "5.0.0",
         "@angular/platform-browser-dynamic": "5.0.0",
+        "@ionic-native/background-mode": "^4.6.0",
         "@ionic-native/camera": "4.5.3",
         "@ionic-native/core": "4.5.3",
         "@ionic-native/fcm": "4.5.3",
@@ -39,6 +40,7 @@
         "com.moust.cordova.videoplayer": "https://github.com/moust/cordova-plugin-videoplayer.git",
         "cordova-android": "~6.4.0",
         "cordova-ios": "^4.5.4",
+        "cordova-plugin-background-mode": "^0.7.2",
         "cordova-plugin-camera": "^3.0.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-device-motion": "^2.0.0",
@@ -87,7 +89,8 @@
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-media": {},
             "cordova-plugin-file": {},
-            "cordova-plugin-network-information": {}
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-background-mode": {}
         },
         "platforms": [
             "android",

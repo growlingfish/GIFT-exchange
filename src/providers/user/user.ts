@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { App, Platform, AlertController, LoadingController, Loading } from 'ionic-angular';
 
+import { BackgroundMode } from '@ionic-native/background-mode';
 import { File } from '@ionic-native/file';
 import { FCM } from '@ionic-native/fcm';
 import { Network } from '@ionic-native/network';
@@ -101,7 +102,7 @@ export class UserProvider {
   shownDisconnected: boolean = false;
   paused: boolean = false;
 
-  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network, private file: File) {
+  constructor(public app: App, public http: HttpClient,  private storage: Storage, private globalVar: GlobalVarProvider, private platform: Platform, private fcm: FCM, private alertController: AlertController, private loadingCtrl: LoadingController, private network: Network, private file: File, private backgroundMode: BackgroundMode) {
     this.monitorConnection();
   }
 
@@ -434,12 +435,9 @@ export class UserProvider {
             if (user == null) {
               // not logged in; no deliveries for me
             } else {
-              /*if (data.wasTapped) { //Notification was received in notification tray (app is in background)
-                
-              } else { //Notification was received when app is in foreground
-              
-              }*/
-              //alert(JSON.stringify(data));
+              if (data.wasTapped) { //Notification was received in notification tray (app is in background)
+                this.backgroundMode.moveToForeground();
+              }
               switch (data.topic) {
                 case 'giftSent':
                   if (user.ID == data.recipientID) {
