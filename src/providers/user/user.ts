@@ -364,9 +364,10 @@ export class UserProvider {
   public logout (): Promise<void> {
     this.platform.ready().then(() => {
       if (this.platform.is('cordova')) {
-        this.fcm.unsubscribeFromTopic('giftGlobal');
-        this.fcm.unsubscribeFromTopic('giftDeliveries');
-        this.fcm.unsubscribeFromTopic('giftStatus');
+        this.fcm.unsubscribeFromTopic('giftSent');
+        this.fcm.unsubscribeFromTopic('giftUnwrapped');
+        this.fcm.unsubscribeFromTopic('giftReceived');
+        this.fcm.unsubscribeFromTopic('responseSent');
       }
     });
 
@@ -546,7 +547,7 @@ export class UserProvider {
                   }
                   break;
                 default:
-                  console.log(data);
+                  //console.log(data);
                   break;
               }
             }
